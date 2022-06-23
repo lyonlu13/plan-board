@@ -1,3 +1,5 @@
+import { InterObjectData } from 'interObjects/define/interObject'
+
 export interface GeometricContextInterface {
   select: boolean
   setSelect: (arg0: boolean) => void
@@ -56,4 +58,17 @@ export interface AppearanceContextInterface {
 export const AprcDefault: AppearanceContextInterface = {
   geoTransition: false,
   setGeoTransition: (arg0: boolean) => {},
+}
+
+export interface DataBulk {
+  [id: string]: InterObjectData
+}
+export interface DataContextInterface {
+  datas: DataBulk
+  setDatas: (newVal: DataBulk) => void
+}
+
+export const DataDefault: DataContextInterface = {
+  datas: {},
+  setDatas: (newVal: DataBulk) => {},
 }

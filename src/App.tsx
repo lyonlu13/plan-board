@@ -6,19 +6,25 @@ import ZoomIndicator from 'components/gui/ZoomIndicator'
 import useGeo from 'hooks/useGeo'
 import { AiOutlinePlus } from 'react-icons/ai'
 import ReactTooltip from 'react-tooltip'
-import DataProvider from 'components/logical/DataProvider'
 import useAppearance from 'hooks/useAppearance'
+import SketchText from 'interObjects/sketch/SketchText'
+import RightPanel from 'components/gui/RightPanel'
+import PropsInspector from 'components/gui/PropsInspector'
 
 function App() {
-  const { offsetX, offsetY, zoom, grab, select } = useGeo()
+  const { offsetX, offsetY, zoom, grab } = useGeo()
   const { geoTransition: geoT } = useAppearance()
   return (
     <div
       className="App"
       style={{ position: 'relative', cursor: grab ? 'grabbing' : 'auto' }}
     >
-      <Block x={100} y={100} />
+      <Block x={-100} y={100} />
+      <SketchText id="obj1" x={100} y={100} />
       <Header />
+      <RightPanel>
+        <PropsInspector />
+      </RightPanel>
       <Grid />
       {<Selection />}
       <AiOutlinePlus

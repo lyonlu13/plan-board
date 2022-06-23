@@ -1,4 +1,4 @@
-import { AprcCtx, GeoCtx } from 'components/logical/DataProvider'
+import { AprcCtx, GeoCtx } from 'components/logical/StateProvider'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import useViewPort from './useViewPort'
 
@@ -89,6 +89,9 @@ export default function useGeo() {
 
   useEffect(() => {
     const onMousewheel: EventListener = (event: any) => {
+      event.stopImmediatePropagation()
+      event.preventDefault()
+
       let nZoom = 0
       if (event.wheelDelta <= -120) nZoom = zoom - 0.1
       else if (event.wheelDelta >= 120) nZoom = zoom + 0.1
@@ -96,7 +99,7 @@ export default function useGeo() {
       setGeoTransition(true)
       setTimeout(() => setGeoTransition(false), 300)
     }
-    window.addEventListener('mousewheel', onMousewheel, false)
+    window.addEventListener('mousewheel', onMousewheel, { passive: false })
     return () => {
       window.removeEventListener('mousewheel', onMousewheel, false)
     }

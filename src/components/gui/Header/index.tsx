@@ -1,4 +1,4 @@
-import { AprcCtx, GeoCtx } from 'components/logical/DataProvider'
+import { AprcCtx, GeoCtx } from 'components/logical/StateProvider'
 import useViewPort from 'hooks/useViewPort'
 import React, { useEffect, useRef, useState } from 'react'
 import { useContext } from 'react'
@@ -9,6 +9,7 @@ import AutosizeInput from 'react-input-autosize'
 import ReactTooltip from 'react-tooltip'
 import useGeo from 'hooks/useGeo'
 import useAppearance from 'hooks/useAppearance'
+import Icon from 'components/common/Icon'
 
 const Root = styled.div`
   display: flex;
@@ -168,6 +169,7 @@ export default function Header() {
         >
           <MdZoomIn />
         </Button>
+        <Icon icon="Md" color="red" size={24} />
       </GeoTools>
     </Root>
   )

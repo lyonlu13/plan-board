@@ -1,4 +1,4 @@
-import { GeoCtx } from 'components/logical/DataProvider'
+import { GeoCtx } from 'components/logical/StateProvider'
 import useGeo from 'hooks/useGeo'
 import { useContext } from 'react'
 import styled from 'styled-components'

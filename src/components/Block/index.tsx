@@ -30,12 +30,7 @@ const Plate = styled.div`
 const TitleText = styled.div`
   font-size: 16px;
   padding: 0 5px;
-  background-color: transparent;
-  transition: 0.3s;
   color: white;
-  &:hover {
-    background-color: #ffffff67;
-  }
 `
 
 const Scaler = styled.div`

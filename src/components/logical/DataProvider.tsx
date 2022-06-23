@@ -1,69 +1,31 @@
-import {
-  AppearanceContextInterface,
-  AprcDefault,
-  GeoDefault,
-  GeometricContextInterface,
-} from 'Contexts'
-import useViewPort from 'hooks/useViewPort'
+import { DataBulk, DataContextInterface, DataDefault } from 'Contexts'
+import { TextSketchData } from 'interObjects/sketch/SketchText/Text'
 import React, { createContext, useEffect, useState } from 'react'
-import { useContext } from 'react'
 
-export const GeoCtx = createContext<GeometricContextInterface>(GeoDefault)
-export const AprcCtx = createContext<AppearanceContextInterface>(AprcDefault)
+export const DataCtx = createContext<DataContextInterface>(DataDefault)
+
+const obj1 = new TextSketchData().loadFromJSON(
+  `{
+    "name": "obj1",
+    "text": "Some useless text <br>text",
+    "fontSize": 14,
+    "color": {"background":"red","foreground":"white"}
+  }`,
+)
 
 export default function DataProvider({ children }: Props) {
-  //@ Appearance
-  const [geoTransition, setGeoTransition] = useState<boolean>(false)
-
-  //@ Geometric
-  const [lastX, setLastX] = useState<number>(0)
-  const [lastY, setLastY] = useState<number>(0)
-  const [x, setX] = useState<number>(0)
-  const [y, setY] = useState<number>(0)
-  const [grab, setGrab] = useState<boolean>(false)
-  const [select, setSelect] = useState<boolean>(false)
-  const [lastOffsetX, setLastOffsetX] = useState<number>(0)
-  const [lastOffsetY, setLastOffsetY] = useState<number>(0)
-  const [offsetX, setOffsetX] = useState<number>(window.innerWidth / 2)
-  const [offsetY, setOffsetY] = useState<number>(window.innerHeight / 2)
-  const [zoom, setZoom] = useState<number>(1)
-
+  const [dataBulk, setDataBulk] = useState<DataBulk>({
+    obj1: obj1,
+  })
   return (
-    <AprcCtx.Provider
+    <DataCtx.Provider
       value={{
-        geoTransition,
-        setGeoTransition,
+        datas: dataBulk,
+        setDatas: setDataBulk,
       }}
     >
-      <GeoCtx.Provider
-        value={{
-          select,
-          setSelect,
-          grab,
-          setGrab,
-          offsetX,
-          setOffsetX,
-          offsetY,
-          setOffsetY,
-          zoom,
-          setZoom,
-          x,
-          setX,
-          y,
-          setY,
-          lastX,
-          setLastX,
-          lastY,
-          setLastY,
-          lastOffsetX,
-          setLastOffsetX,
-          lastOffsetY,
-          setLastOffsetY,
-        }}
-      >
-        {children}
-      </GeoCtx.Provider>
-    </AprcCtx.Provider>
+      {children}
+    </DataCtx.Provider>
   )
 }
 
