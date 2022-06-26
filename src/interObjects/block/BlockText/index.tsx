@@ -56,6 +56,9 @@ const BlockText: FC<InterObjectComponentProps> = ({
         onBlur={(e) => {
           setEditing(false)
         }}
+        onKeyDown={(e) => {
+          e.stopPropagation()
+        }}
       />
     </Block>
   )

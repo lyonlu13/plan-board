@@ -33,14 +33,15 @@ export class InterObject {
 
 export class InterObjectInfo {
   type: ObjectType
+  displayName: string = ''
   name: string
-  description: string
+  description: string = ''
   propFields: PropField[]
   component!: FC<InterObjectComponentProps>
-  constructor(type: ObjectType, name: string, description: string) {
+  icon: string = ''
+  constructor(type: ObjectType, name: string) {
     this.type = type
     this.name = name
-    this.description = description
     this.propFields = []
   }
   prop(pf: PropField) {
@@ -49,6 +50,18 @@ export class InterObjectInfo {
   }
   bind(fc: FC<InterObjectComponentProps>) {
     this.component = fc
+    return this
+  }
+  setIcon(icon: string) {
+    this.icon = icon
+    return this
+  }
+  setDisplayName(displayName: string) {
+    this.displayName = displayName
+    return this
+  }
+  setDescription(description: string) {
+    this.description = description
     return this
   }
 }

@@ -19,8 +19,7 @@ import Processor from 'interObjects/struct/Processor'
 
 export const SketchTextInfo: InterObjectInfo = new InterObjectInfo(
   ObjectType.Sketch,
-  'Sketch Text',
-  'For general text expression',
+  'SketchText',
 )
   .prop({
     type: PropFieldType.Number,
@@ -100,11 +99,13 @@ export const SketchTextInfo: InterObjectInfo = new InterObjectInfo(
     caseTo: 'text',
   } as TextPropField)
   .bind(SketchText)
+  .setIcon('MdTextFormat')
+  .setDisplayName('Sketch Text')
+  .setDescription('For general text expression')
 
 export const SketchImageInfo: InterObjectInfo = new InterObjectInfo(
   ObjectType.Sketch,
-  'Sketch Image',
-  'For displaying image',
+  'SketchImage',
 )
   .prop({
     type: PropFieldType.Number2D,
@@ -142,11 +143,13 @@ export const SketchImageInfo: InterObjectInfo = new InterObjectInfo(
     caseTo: 'source',
   } as ImagePropField)
   .bind(SketchImage)
+  .setIcon('MdImage')
+  .setDisplayName('Sketch Image')
+  .setDescription('For displaying image')
 
 export const BlockTextInfo: InterObjectInfo = new InterObjectInfo(
   ObjectType.Block,
-  'Block Text',
-  'For processable text',
+  'BlockText',
 )
   .prop({
     type: PropFieldType.Number,
@@ -163,20 +166,24 @@ export const BlockTextInfo: InterObjectInfo = new InterObjectInfo(
     caseTo: 'text',
   } as TextPropField)
   .bind(BlockText)
+  .setIcon('MdTextFormat')
+  .setDisplayName('Block Text')
+  .setDescription('For processable text')
 
 export const ProcessorTextCountInfo: ProcessorInfo = new ProcessorInfo(
   ObjectType.Processor,
-  'Count Text',
-  'Count the text',
+  'ProcessorTextCount',
 )
   .input(0, 'Text')
   .output(0, 'Length')
   .output(1, 'Words')
+  .setIcon('AiOutlineFieldNumber')
+  .setDisplayName('Text Count')
+  .setDescription('Calculate the words count and character count in the text')
 
 export const ProcessorConcatInfo: ProcessorInfo = new ProcessorInfo(
   ObjectType.Processor,
-  'Concat',
-  'Concat two sequences',
+  'ProcessorConcat',
 )
   .input(0, 'Text1')
   .input(1, 'Text2')
@@ -187,11 +194,13 @@ export const ProcessorConcatInfo: ProcessorInfo = new ProcessorInfo(
     placeholder: 'Added between two sequences',
     caseTo: 'delimiter',
   } as TextPropField)
+  .setIcon('AiOutlineMergeCells')
+  .setDisplayName('Processor Concat')
+  .setDescription('Concat two sequences')
 
 export const ProcessorArrayInfo: ProcessorInfo = new ProcessorInfo(
   ObjectType.Processor,
-  'Array',
-  'Generate array',
+  'ProcessorArray',
 )
   .dp()
   .prop({
@@ -199,11 +208,13 @@ export const ProcessorArrayInfo: ProcessorInfo = new ProcessorInfo(
     label: 'Count',
     caseTo: 'count',
   } as NumberPropField)
+  .setIcon('VscSymbolArray')
+  .setDisplayName('Processor Array')
+  .setDescription('Generate array')
 
 export const ProcessorJoinInfo: ProcessorInfo = new ProcessorInfo(
   ObjectType.Processor,
-  'Join',
-  'Join array items',
+  'ProcessorJoin',
 )
   .input(0, 'Array')
   .output(0, 'Text')
@@ -213,11 +224,13 @@ export const ProcessorJoinInfo: ProcessorInfo = new ProcessorInfo(
     placeholder: 'Added between two sequences',
     caseTo: 'delimiter',
   } as TextPropField)
+  .setIcon('AiOutlineMergeCells')
+  .setDisplayName('Processor Join')
+  .setDescription('Join array items')
 
 export const ProcessorSplitInfo: ProcessorInfo = new ProcessorInfo(
   ObjectType.Processor,
-  'Split',
-  'Split text',
+  'ProcessorSplit',
 )
   .input(0, 'Text')
   .output(0, 'Array')
@@ -227,3 +240,6 @@ export const ProcessorSplitInfo: ProcessorInfo = new ProcessorInfo(
     placeholder: 'Split sequence with',
     caseTo: 'delimiter',
   } as TextPropField)
+  .setIcon('AiOutlineSplitCells')
+  .setDisplayName('Processor Split')
+  .setDescription('Split text')

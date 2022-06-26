@@ -7,6 +7,7 @@ import StateProvider from 'components/logical/StateProvider'
 import DataProvider from 'components/logical/DataProvider'
 import ObjectProvider from 'components/logical/ObjectProvider'
 import DataFlowProvider from 'components/logical/DataFlowProvider'
+import ActionProvider from 'components/logical/ActionProvider'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
@@ -14,7 +15,9 @@ root.render(
     <StateProvider>
       <DataFlowProvider>
         <ObjectProvider>
-          <App />
+          <ActionProvider>
+            <App />
+          </ActionProvider>
         </ObjectProvider>
       </DataFlowProvider>
     </StateProvider>

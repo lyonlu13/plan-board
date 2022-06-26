@@ -24,76 +24,6 @@ const obj1 = new InterObject(ObjectType.Sketch, 'SketchText', 'obj1').move({
   y: -100,
 })
 
-const obj2 = new InterObject(ObjectType.Sketch, 'SketchText', 'obj2').move({
-  x: 0,
-  y: -100,
-})
-
-const obj3 = new InterObject(ObjectType.Sketch, 'SketchImage', 'obj3').move({
-  x: -200,
-  y: 200,
-})
-
-const obj4 = new InterObject(
-  ObjectType.Processor,
-  'ProcessorJoin',
-  'obj4',
-).move({
-  x: -200,
-  y: 0,
-})
-
-const obj5 = new InterObject(ObjectType.Block, 'BlockText', 'obj5').move({
-  x: 100,
-  y: 0,
-})
-
-const obj6 = new InterObject(ObjectType.Block, 'BlockText', 'obj6').move({
-  x: 400,
-  y: 0,
-})
-
-const obj7 = new InterObject(ObjectType.Block, 'BlockText', 'obj7').move({
-  x: 400,
-  y: 250,
-})
-
-const obj8 = new InterObject(
-  ObjectType.Processor,
-  'ProcessorTextCount',
-  'obj8',
-).move({
-  x: 400,
-  y: 250,
-})
-
-const obj9 = new InterObject(
-  ObjectType.Processor,
-  'ProcessorConcat',
-  'obj9',
-).move({
-  x: 600,
-  y: 250,
-})
-
-const obj10 = new InterObject(
-  ObjectType.Processor,
-  'ProcessorArray',
-  'obj10',
-).move({
-  x: 600,
-  y: 250,
-})
-
-const obj11 = new InterObject(
-  ObjectType.Processor,
-  'ProcessorSplit',
-  'obj11',
-).move({
-  x: 600,
-  y: 250,
-})
-
 interface Rect {
   left: number
   right: number
@@ -108,16 +38,6 @@ export interface PosRecord {
 export default function ObjectProvider({ children }: Props) {
   const [objBulk, setObjBulk] = useState<ObjectBulk>({
     obj1,
-    obj2,
-    obj3,
-    obj4,
-    obj5,
-    obj6,
-    obj7,
-    obj8,
-    obj9,
-    obj10,
-    obj11,
   })
 
   const { lastX, lastY, x, y, select: selecting, realToPos } = useGeo()

@@ -209,7 +209,7 @@ export class ProcessorArrayData extends InterObjectData {
     return [[...this.array]]
   }
   nameRender() {
-    return `Array[${this.count}]`
+    return `Array[${Math.max(this.count, 1)}]`
   }
   dynamicPorts(): {
     inputs: { title: string }[]

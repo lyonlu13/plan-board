@@ -3,11 +3,15 @@ import { MdWarning } from 'react-icons/md'
 import * as MdIcons from 'react-icons/md'
 import * as TbIcons from 'react-icons/tb'
 import * as CgIcons from 'react-icons/cg'
+import * as VsIcons from 'react-icons/vsc'
+import * as AiIcons from 'react-icons/ai'
 import { MouseEventHandler } from 'react'
 
 type MdKey = keyof typeof MdIcons
 type TbKey = keyof typeof TbIcons
 type CgKey = keyof typeof CgIcons
+type VsKey = keyof typeof VsIcons
+type AiKey = keyof typeof AiIcons
 
 export default function Icon({
   icon,
@@ -21,7 +25,12 @@ export default function Icon({
     ? MdIcons[icon as MdKey]
     : icon.startsWith('Tb')
     ? TbIcons[icon as TbKey]
-    : CgIcons[icon as CgKey]
+    : icon.startsWith('Cg')
+    ? CgIcons[icon as CgKey]
+    : icon.startsWith('Vs')
+    ? VsIcons[icon as VsKey]
+    : AiIcons[icon as AiKey]
+
   if (Target)
     return (
       <Target

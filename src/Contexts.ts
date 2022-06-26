@@ -102,3 +102,11 @@ export const DataFlowDefault: DataFlowContextInterface = {
   buildLine: (a: string, b: number) => {},
   lining: false,
 }
+
+export interface ActionContextInterface {
+  showNewInterObjectModel: () => void
+}
+
+export const ActionDefault: ActionContextInterface = {
+  showNewInterObjectModel: () => {},
+}

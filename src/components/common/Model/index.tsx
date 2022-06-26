@@ -10,6 +10,8 @@ const Root = styled.div`
   bottom: 0;
   right: 0;
   transition: 0.2s;
+  z-index: 4;
+  color: white;
 `
 
 const Panel = styled.div`

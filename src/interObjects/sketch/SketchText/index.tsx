@@ -93,6 +93,9 @@ const SketchText: FC<InterObjectComponentProps> = ({
           onBlur={(e) => {
             setEditing(false)
           }}
+          onKeyDown={(e) => {
+            e.stopPropagation()
+          }}
         />
       </Frame>
     </LocBase>
