@@ -69,29 +69,31 @@ export default function DataFlowProvider({ children }: Props) {
     const nDatas = cloneDeep(datas)
     const hash: { [key: string]: boolean } = {}
     const candidates: string[] = []
-    const parsed: { [key: string]: string[] } = {}
+    const parsed: { [key: string]: { deps: string[]; ports: number[] } } = {}
     lineSel.forEach((line) => {
       if (!hash[line.in]) {
         hash[line.in] = true
         candidates.push(line.in)
       }
-      if (parsed[line.in]) parsed[line.in][line.inPort] = line.out
-      else {
-        parsed[line.in] = []
-        parsed[line.in][line.inPort] = line.out
-      }
+      if (!parsed[line.in]) parsed[line.in] = { deps: [], ports: [] }
+      parsed[line.in].deps[line.inPort] = line.out
+      parsed[line.in].ports[line.inPort] = line.outPort
     })
     let loopDetect = 0
     while (candidates.length && loopDetect < 100) {
       loopDetect++
       for (let j = 0; j < candidates.length; j++) {
         let flag = 1
-        parsed[candidates[j]].forEach((dep) => {
+        parsed[candidates[j]].deps.forEach((dep, i) => {
           if (candidates.indexOf(dep) !== -1) flag = 0
         })
         if (flag) {
-          // console.log(candidates[j], 'can be calc')
-          nDatas[candidates[j]].input(nDatas[parsed[candidates[j]][0]].output())
+          const cand = parsed[candidates[j]]
+          const parameters: any[] = []
+          cand.deps.forEach((dep, i) => {
+            parameters.push(nDatas[dep].output()[cand.ports[i]])
+          })
+          nDatas[candidates[j]].input(parameters)
           candidates.splice(j, 1)
         }
       }
@@ -125,6 +127,11 @@ export default function DataFlowProvider({ children }: Props) {
   function buildLine(id: string, port: number) {
     if (!lineInfo) setLineInfo({ out: id, outPort: port })
     else {
+      if (lineInfo.out === id) {
+        //self connection
+        setLineInfo(null)
+        return
+      }
       const nLines = cloneDeep(lines)
       nLines.push({
         id: makeId(),

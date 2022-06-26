@@ -104,6 +104,9 @@ export class InterObjectData {
   output(): any[] {
     return []
   }
+  passive() {
+    return false
+  }
 }
 
 export interface InterObjectComponentProps {

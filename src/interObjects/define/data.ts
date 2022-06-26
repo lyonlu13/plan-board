@@ -148,6 +148,9 @@ export class BlockTextData extends InterObjectData {
   output(): any[] {
     return [this.text]
   }
+  passive() {
+    return this.ports.in[0]
+  }
 }
 export function BlockTextDataDefault(): BlockTextData {
   return new BlockTextData('New Text').loadFromJSON(`{

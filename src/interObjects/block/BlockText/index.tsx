@@ -31,7 +31,7 @@ const BlockText: FC<InterObjectComponentProps> = ({
           minWidth: 180,
           maxWidth: data.maxWidth,
           minHeight: 155,
-          backgroundColor: 'white',
+          backgroundColor: data.ports.in[0] ? '#b1b1b1' : 'white',
           color: 'black',
           cursor: 'text',
           outline: 'none',
@@ -41,10 +41,11 @@ const BlockText: FC<InterObjectComponentProps> = ({
           padding: 5,
           borderRadius: 5,
         }}
-        disabled={!selected}
         html={data.text}
         tagName="div"
-        onChange={(e) => modify('text', e.target.value)}
+        onChange={(e) => {
+          if (!data.ports.in[0]) modify('text', e.target.value)
+        }}
         onFocus={() => {
           select()
         }}

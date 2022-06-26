@@ -51,7 +51,7 @@ interface Props {
   children: ReactNode
 }
 
-export default function Block({ id, x, y, children }: Props) {
+export default function Processor({ id, x, y }: Props) {
   const { zoom, offsetX, offsetY } = useGeo()
   const { geoTransition } = useAppearance()
   const { select, startDrag, selectedList, stopDrag, selected } = useObject(id)
@@ -113,7 +113,6 @@ export default function Block({ id, x, y, children }: Props) {
               }}
             />
           </Header>
-          {children}
         </Plate>
       </Frame>
     </Root>
