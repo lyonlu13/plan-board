@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { LookupInfo } from './lookup'
 import { PropField } from './propField'
 
 export enum ObjectType {
@@ -53,6 +54,7 @@ export class InterObjectInfo {
 }
 
 export class InterObjectData {
+  subname: string = ''
   name: string
   ports: {
     in: boolean[]
@@ -107,6 +109,15 @@ export class InterObjectData {
   passive() {
     return false
   }
+  nameRender(): string | null {
+    return null
+  }
+  dynamicPorts(): {
+    inputs: { title: string }[]
+    outputs: { title: string }[]
+  } {
+    return { inputs: [], outputs: [] }
+  }
 }
 
 export interface InterObjectComponentProps {
@@ -127,6 +138,7 @@ export interface ProcessorComponentProps {
 export class ProcessorInfo extends InterObjectInfo {
   inputs: { title: string }[] = []
   outputs: { title: string }[] = []
+  dynamicPort: boolean = false
   prop(pf: PropField) {
     this.propFields.push(pf)
     return this
@@ -137,6 +149,10 @@ export class ProcessorInfo extends InterObjectInfo {
   }
   output(port: number, title: string) {
     this.outputs[port] = { title }
+    return this
+  }
+  dp() {
+    this.dynamicPort = true
     return this
   }
 }

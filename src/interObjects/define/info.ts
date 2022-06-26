@@ -187,3 +187,43 @@ export const ProcessorConcatInfo: ProcessorInfo = new ProcessorInfo(
     placeholder: 'Added between two sequences',
     caseTo: 'delimiter',
   } as TextPropField)
+
+export const ProcessorArrayInfo: ProcessorInfo = new ProcessorInfo(
+  ObjectType.Processor,
+  'Array',
+  'Generate array',
+)
+  .dp()
+  .prop({
+    type: PropFieldType.Number,
+    label: 'Count',
+    caseTo: 'count',
+  } as NumberPropField)
+
+export const ProcessorJoinInfo: ProcessorInfo = new ProcessorInfo(
+  ObjectType.Processor,
+  'Join',
+  'Join array items',
+)
+  .input(0, 'Array')
+  .output(0, 'Text')
+  .prop({
+    type: PropFieldType.Text,
+    label: 'Delimiter',
+    placeholder: 'Added between two sequences',
+    caseTo: 'delimiter',
+  } as TextPropField)
+
+export const ProcessorSplitInfo: ProcessorInfo = new ProcessorInfo(
+  ObjectType.Processor,
+  'Split',
+  'Split text',
+)
+  .input(0, 'Text')
+  .output(0, 'Array')
+  .prop({
+    type: PropFieldType.Text,
+    label: 'Delimiter',
+    placeholder: 'Split sequence with',
+    caseTo: 'delimiter',
+  } as TextPropField)

@@ -34,7 +34,11 @@ const obj3 = new InterObject(ObjectType.Sketch, 'SketchImage', 'obj3').move({
   y: 200,
 })
 
-const obj4 = new InterObject(ObjectType.Block, 'BlockText', 'obj4').move({
+const obj4 = new InterObject(
+  ObjectType.Processor,
+  'ProcessorJoin',
+  'obj4',
+).move({
   x: -200,
   y: 0,
 })
@@ -57,7 +61,7 @@ const obj7 = new InterObject(ObjectType.Block, 'BlockText', 'obj7').move({
 const obj8 = new InterObject(
   ObjectType.Processor,
   'ProcessorTextCount',
-  'obj7',
+  'obj8',
 ).move({
   x: 400,
   y: 250,
@@ -66,7 +70,7 @@ const obj8 = new InterObject(
 const obj9 = new InterObject(
   ObjectType.Processor,
   'ProcessorConcat',
-  'obj8',
+  'obj9',
 ).move({
   x: 600,
   y: 250,
@@ -74,8 +78,17 @@ const obj9 = new InterObject(
 
 const obj10 = new InterObject(
   ObjectType.Processor,
-  'ProcessorConcat',
-  'obj8',
+  'ProcessorArray',
+  'obj10',
+).move({
+  x: 600,
+  y: 250,
+})
+
+const obj11 = new InterObject(
+  ObjectType.Processor,
+  'ProcessorSplit',
+  'obj11',
 ).move({
   x: 600,
   y: 250,
@@ -104,6 +117,7 @@ export default function ObjectProvider({ children }: Props) {
     obj8,
     obj9,
     obj10,
+    obj11,
   })
 
   const { lastX, lastY, x, y, select: selecting, realToPos } = useGeo()

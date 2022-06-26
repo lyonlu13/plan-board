@@ -98,37 +98,47 @@ export default function Processor({ id, x, y, info }: ProcessorComponentProps) {
       <Frame id={id} radius>
         <Plate>
           <Column>
-            {info.inputs.map((input, i) => (
-              <Node>
-                <MdArrowRight
-                  className={
-                    lining && !data.ports.in[i] ? 'selectable' : 'unselectable'
-                  }
-                  size={24}
-                  id={`in${i}`}
-                  onClick={() => {
-                    buildLine(id, i)
-                  }}
-                />
-                {input.title}
-              </Node>
-            ))}
+            {(() => {
+              let inputs = info.inputs
+              if (info.dynamicPort) inputs = data.dynamicPorts().inputs
+              return inputs.map((input, i) => (
+                <Node>
+                  <MdArrowRight
+                    className={
+                      lining && !data.ports.in[i]
+                        ? 'selectable'
+                        : 'unselectable'
+                    }
+                    size={24}
+                    id={`in${i}`}
+                    onClick={() => {
+                      buildLine(id, i)
+                    }}
+                  />
+                  {input.title}
+                </Node>
+              ))
+            })()}
           </Column>
-          <Title>{info.name}</Title>
+          <Title>{data.nameRender() || info.name}</Title>
           <Column>
-            {info.outputs.map((output, i) => (
-              <Node>
-                {output.title}
-                <MdArrowRight
-                  className={!lining ? 'selectable' : 'unselectable'}
-                  size={24}
-                  id={`out${i}`}
-                  onClick={() => {
-                    buildLine(id, i)
-                  }}
-                />
-              </Node>
-            ))}
+            {(() => {
+              let outputs = info.outputs
+              if (info.dynamicPort) outputs = data.dynamicPorts().outputs
+              return outputs.map((output, i) => (
+                <Node>
+                  {output.title}
+                  <MdArrowRight
+                    className={!lining ? 'selectable' : 'unselectable'}
+                    size={24}
+                    id={`out${i}`}
+                    onClick={() => {
+                      buildLine(id, i)
+                    }}
+                  />
+                </Node>
+              ))
+            })()}
           </Column>
         </Plate>
       </Frame>

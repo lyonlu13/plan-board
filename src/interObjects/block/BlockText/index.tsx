@@ -30,7 +30,7 @@ const BlockText: FC<InterObjectComponentProps> = ({
         style={{
           minWidth: 180,
           width: data.maxWidth || undefined,
-          minHeight: 155,
+          minHeight: 50,
           backgroundColor: data.ports.in[0] ? '#b1b1b1' : 'white',
           color: 'black',
           cursor: 'text',

@@ -1,7 +1,9 @@
 import { InterObjectData } from 'interObjects/define/interObject'
+import { stringify } from 'querystring'
 
 export class SketchTextData extends InterObjectData {
   text!: string
+  subname: string = 'sketchText'
   maxWidth!: number
   size!: number
   color!: {
@@ -98,6 +100,7 @@ export interface ImageSource {
 }
 
 export class SketchImageData extends InterObjectData {
+  subname: string = 'sketchImage'
   source!: ImageSource
   dim!: {
     resizeMode: {
@@ -140,10 +143,11 @@ export function SketchImageDataDefault(): SketchImageData {
 }
 
 export class BlockTextData extends InterObjectData {
+  subname: string = 'blockText'
   maxWidth!: number
   text!: string
   input(args: any[]) {
-    this.text = args[0]
+    this.text = args[0].toString()
   }
   output(): any[] {
     return [this.text]
@@ -161,17 +165,15 @@ export function BlockTextDataDefault(): BlockTextData {
 }
 
 export class ProcessorTextCountData extends InterObjectData {
+  subname: string = 'processorTextCount'
   text: string = ''
   input(args: any[]) {
-    this.text = args[0]
+    this.text = JSON.stringify(args[0])
   }
   output(): any[] {
     return [
-      this.text.length.toString(),
-      this.text
-        .split(' ')
-        .filter((w) => w !== ' ' && w !== '')
-        .length.toString(),
+      this.text.length,
+      this.text.split(' ').filter((w) => w !== ' ' && w !== '').length,
     ]
   }
   passive() {
@@ -180,6 +182,7 @@ export class ProcessorTextCountData extends InterObjectData {
 }
 
 export class ProcessorConcatData extends InterObjectData {
+  subname: string = 'processorConcat'
   text1: string = ''
   text2: string = ''
   delimiter: string = ''
@@ -189,5 +192,64 @@ export class ProcessorConcatData extends InterObjectData {
   }
   output(): any[] {
     return [this.text1 + this.delimiter + this.text2]
+  }
+  nameRender() {
+    return this.delimiter ? `Concat with "${this.delimiter}"` : 'Concat'
+  }
+}
+
+export class ProcessorArrayData extends InterObjectData {
+  subname: string = 'processorArray'
+  count: number = 3
+  array: any[] = []
+  input(args: any[]) {
+    this.array = args
+  }
+  output(): any[] {
+    return [[...this.array]]
+  }
+  nameRender() {
+    return `Array[${this.count}]`
+  }
+  dynamicPorts(): {
+    inputs: { title: string }[]
+    outputs: { title: string }[]
+  } {
+    return {
+      inputs: Array.from(Array(Math.max(this.count, 1)).keys()).map((key) => ({
+        title: `Obj${key + 1}`,
+      })),
+      outputs: [{ title: `Array[${Math.max(this.count, 1)}]` }],
+    }
+  }
+}
+
+export class ProcessorJoinData extends InterObjectData {
+  subname: string = 'processorJoin'
+  delimiter: string = ''
+  array: any[] = []
+  input(args: any[]) {
+    this.array = args[0]
+  }
+  output(): any[] {
+    return [this.array.join(this.delimiter)]
+  }
+  nameRender() {
+    return this.delimiter ? `Join with "${this.delimiter}"` : 'Join'
+  }
+}
+
+export class ProcessorSplitData extends InterObjectData {
+  subname: string = 'processorSplit'
+  delimiter: string = ''
+  text: string = ''
+  input(args: any[]) {
+    this.text = args[0]
+  }
+  output(): any[] {
+    return [this.text.split(this.delimiter)]
+  }
+  nameRender() {
+    return `Split with "${this.delimiter}"`
   }
 }
