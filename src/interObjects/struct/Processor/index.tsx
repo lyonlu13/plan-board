@@ -4,6 +4,7 @@ import useData from 'hooks/useData'
 import useGeo from 'hooks/useGeo'
 import useObject from 'hooks/useObject'
 import useViewPort from 'hooks/useViewPort'
+import { ProcessorComponentProps } from 'interObjects/define/interObject'
 import { ReactNode, useContext, useRef } from 'react'
 import { MdArrowLeft, MdArrowRight, MdInput } from 'react-icons/md'
 import styled from 'styled-components'
@@ -25,11 +26,18 @@ const Plate = styled.div`
   color: white;
   cursor: move;
   transition: 0.2s;
+  display: flex;
+  gap: 10px;
 `
 
-const Header = styled.div`
+const Column = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+`
+
+const Node = styled.div`
+  font-size: 16px;
+  display: flex;
   align-items: center;
 `
 
@@ -37,11 +45,12 @@ const Title = styled.div`
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 16px;
+  font-size: 18px;
   padding: 0 5px;
   margin-bottom: 5px;
   color: white;
   text-align: center;
+  font-weight: bold;
 `
 
 interface Props {
@@ -51,14 +60,13 @@ interface Props {
   children: ReactNode
 }
 
-export default function Processor({ id, x, y }: Props) {
+export default function Processor({ id, x, y, info }: ProcessorComponentProps) {
   const { zoom, offsetX, offsetY } = useGeo()
   const { geoTransition } = useAppearance()
   const { select, startDrag, selectedList, stopDrag, selected } = useObject(id)
   const { data } = useData(id)
   const clickDetect = useRef(0)
   const { buildLine, lining } = useContext(DFCtx)
-
   return (
     <Root
       id={`inter-obj-${id}`}
@@ -89,30 +97,39 @@ export default function Processor({ id, x, y }: Props) {
     >
       <Frame id={id} radius>
         <Plate>
-          <Header>
-            <MdArrowRight
-              className={
-                lining && !data.ports.in[0] ? 'selectable' : 'unselectable'
-              }
-              size={24}
-              id="in0"
-              onClick={() => {
-                buildLine(id, 0)
-              }}
-            />
-            <Title>
-              {data.passive() && <MdInput />}
-              {data.name}
-            </Title>
-            <MdArrowRight
-              className={!lining ? 'selectable' : 'unselectable'}
-              size={24}
-              id="out0"
-              onClick={() => {
-                buildLine(id, 0)
-              }}
-            />
-          </Header>
+          <Column>
+            {info.inputs.map((input, i) => (
+              <Node>
+                <MdArrowRight
+                  className={
+                    lining && !data.ports.in[i] ? 'selectable' : 'unselectable'
+                  }
+                  size={24}
+                  id={`in${i}`}
+                  onClick={() => {
+                    buildLine(id, i)
+                  }}
+                />
+                {input.title}
+              </Node>
+            ))}
+          </Column>
+          <Title>{info.name}</Title>
+          <Column>
+            {info.outputs.map((output, i) => (
+              <Node>
+                {output.title}
+                <MdArrowRight
+                  className={!lining ? 'selectable' : 'unselectable'}
+                  size={24}
+                  id={`out${i}`}
+                  onClick={() => {
+                    buildLine(id, i)
+                  }}
+                />
+              </Node>
+            ))}
+          </Column>
         </Plate>
       </Frame>
     </Root>

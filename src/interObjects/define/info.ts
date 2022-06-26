@@ -1,5 +1,9 @@
 import BlockText from 'interObjects/block/BlockText'
-import { InterObjectInfo, ObjectType } from 'interObjects/define/interObject'
+import {
+  InterObjectInfo,
+  ObjectType,
+  ProcessorInfo,
+} from 'interObjects/define/interObject'
 import {
   ImagePropField,
   Number2DPropField,
@@ -11,6 +15,7 @@ import {
 } from 'interObjects/define/propField'
 import SketchImage from 'interObjects/sketch/SketchImage'
 import SketchText from 'interObjects/sketch/SketchText'
+import Processor from 'interObjects/struct/Processor'
 
 export const SketchTextInfo: InterObjectInfo = new InterObjectInfo(
   ObjectType.Sketch,
@@ -158,3 +163,27 @@ export const BlockTextInfo: InterObjectInfo = new InterObjectInfo(
     caseTo: 'text',
   } as TextPropField)
   .bind(BlockText)
+
+export const ProcessorTextCountInfo: ProcessorInfo = new ProcessorInfo(
+  ObjectType.Processor,
+  'Count Text',
+  'Count the text',
+)
+  .input(0, 'Text')
+  .output(0, 'Length')
+  .output(1, 'Words')
+
+export const ProcessorConcatInfo: ProcessorInfo = new ProcessorInfo(
+  ObjectType.Processor,
+  'Concat',
+  'Concat two sequences',
+)
+  .input(0, 'Text1')
+  .input(1, 'Text2')
+  .output(0, 'Text')
+  .prop({
+    type: PropFieldType.Text,
+    label: 'Delimiter',
+    placeholder: 'Added between two sequences',
+    caseTo: 'delimiter',
+  } as TextPropField)

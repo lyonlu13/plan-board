@@ -94,7 +94,7 @@ export default function InspectorRender({ id }: Props) {
                       <TextPropInput
                         textField={textField}
                         value={data.getProp(field.caseTo)} // innerHTML of the editable div
-                        onChange={(e) => modify('text', e.target.value)}
+                        onChange={(e) => modify(field.caseTo, e.target.value)}
                       />
                     )
                   }

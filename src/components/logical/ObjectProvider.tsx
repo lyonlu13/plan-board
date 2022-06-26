@@ -54,6 +54,33 @@ const obj7 = new InterObject(ObjectType.Block, 'BlockText', 'obj7').move({
   y: 250,
 })
 
+const obj8 = new InterObject(
+  ObjectType.Processor,
+  'ProcessorTextCount',
+  'obj7',
+).move({
+  x: 400,
+  y: 250,
+})
+
+const obj9 = new InterObject(
+  ObjectType.Processor,
+  'ProcessorConcat',
+  'obj8',
+).move({
+  x: 600,
+  y: 250,
+})
+
+const obj10 = new InterObject(
+  ObjectType.Processor,
+  'ProcessorConcat',
+  'obj8',
+).move({
+  x: 600,
+  y: 250,
+})
+
 interface Rect {
   left: number
   right: number
@@ -74,6 +101,9 @@ export default function ObjectProvider({ children }: Props) {
     obj5,
     obj6,
     obj7,
+    obj8,
+    obj9,
+    obj10,
   })
 
   const { lastX, lastY, x, y, select: selecting, realToPos } = useGeo()

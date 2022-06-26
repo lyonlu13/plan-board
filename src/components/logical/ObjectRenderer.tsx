@@ -1,4 +1,8 @@
-import { InterObjectInfo } from 'interObjects/define/interObject'
+import {
+  InterObjectInfo,
+  ObjectType,
+  ProcessorInfo,
+} from 'interObjects/define/interObject'
 import {
   BlockTextInfo,
   SketchImageInfo,
@@ -7,6 +11,7 @@ import {
 import React, { useContext } from 'react'
 import { ObjCtx } from './ObjectProvider'
 import { LookupInfo } from 'interObjects/define/lookup'
+import Processor from 'interObjects/struct/Processor'
 
 export default function ObjectRenderer() {
   const { objects, selectedList } = useContext(ObjCtx)
@@ -15,19 +20,33 @@ export default function ObjectRenderer() {
     <>
       {Object.keys(objects).map((key) => {
         const obj = objects[key]
+
         const objInfo = LookupInfo[obj.subname]
 
         if (objInfo) {
-          const Cmp = objInfo.component
-          return (
-            <Cmp
-              key={key}
-              id={key}
-              x={obj.pos.x}
-              y={obj.pos.y}
-              selected={selectedList.indexOf(key) !== -1}
-            />
-          )
+          if (obj.type === ObjectType.Processor) {
+            return (
+              <Processor
+                key={key}
+                id={key}
+                x={obj.pos.x}
+                y={obj.pos.y}
+                selected={selectedList.indexOf(key) !== -1}
+                info={objInfo as ProcessorInfo}
+              />
+            )
+          } else {
+            const Cmp = objInfo.component
+            return (
+              <Cmp
+                key={key}
+                id={key}
+                x={obj.pos.x}
+                y={obj.pos.y}
+                selected={selectedList.indexOf(key) !== -1}
+              />
+            )
+          }
         } else return null
       })}
     </>

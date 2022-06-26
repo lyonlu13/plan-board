@@ -1,6 +1,8 @@
 import { DataBulk, DataContextInterface, DataDefault } from 'Contexts'
 import {
   BlockTextDataDefault,
+  ProcessorConcatData,
+  ProcessorTextCountData,
   SketchImageDataDefault,
   SketchTextData,
   SketchTextDataDefault,
@@ -16,6 +18,9 @@ const obj4 = BlockTextDataDefault()
 const obj5 = BlockTextDataDefault()
 const obj6 = BlockTextDataDefault()
 const obj7 = BlockTextDataDefault()
+const obj8 = new ProcessorTextCountData()
+const obj9 = new ProcessorConcatData()
+const obj10 = new ProcessorConcatData()
 
 export default function DataProvider({ children }: Props) {
   const [dataBulk, setDataBulk] = useState<DataBulk>({
@@ -26,6 +31,9 @@ export default function DataProvider({ children }: Props) {
     obj5,
     obj6,
     obj7,
+    obj8,
+    obj9,
+    obj10,
   })
   return (
     <DataCtx.Provider

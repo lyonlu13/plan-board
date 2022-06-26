@@ -159,3 +159,35 @@ export function BlockTextDataDefault(): BlockTextData {
 }
 `)
 }
+
+export class ProcessorTextCountData extends InterObjectData {
+  text: string = ''
+  input(args: any[]) {
+    this.text = args[0]
+  }
+  output(): any[] {
+    return [
+      this.text.length.toString(),
+      this.text
+        .split(' ')
+        .filter((w) => w !== ' ' && w !== '')
+        .length.toString(),
+    ]
+  }
+  passive() {
+    return this.ports.in[0]
+  }
+}
+
+export class ProcessorConcatData extends InterObjectData {
+  text1: string = ''
+  text2: string = ''
+  delimiter: string = ''
+  input(args: any[]) {
+    this.text1 = args[0] || ''
+    this.text2 = args[1] || ''
+  }
+  output(): any[] {
+    return [this.text1 + this.delimiter + this.text2]
+  }
+}

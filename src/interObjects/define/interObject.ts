@@ -115,3 +115,28 @@ export interface InterObjectComponentProps {
   y: number
   selected: boolean
 }
+
+export interface ProcessorComponentProps {
+  id: string
+  x: number
+  y: number
+  selected: boolean
+  info: ProcessorInfo
+}
+
+export class ProcessorInfo extends InterObjectInfo {
+  inputs: { title: string }[] = []
+  outputs: { title: string }[] = []
+  prop(pf: PropField) {
+    this.propFields.push(pf)
+    return this
+  }
+  input(port: number, title: string) {
+    this.inputs[port] = { title }
+    return this
+  }
+  output(port: number, title: string) {
+    this.outputs[port] = { title }
+    return this
+  }
+}
