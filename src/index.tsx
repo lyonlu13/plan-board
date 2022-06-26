@@ -5,12 +5,18 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import StateProvider from 'components/logical/StateProvider'
 import DataProvider from 'components/logical/DataProvider'
+import ObjectProvider from 'components/logical/ObjectProvider'
+import DataFlowProvider from 'components/logical/DataFlowProvider'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <DataProvider>
     <StateProvider>
-      <App />
+      <DataFlowProvider>
+        <ObjectProvider>
+          <App />
+        </ObjectProvider>
+      </DataFlowProvider>
     </StateProvider>
   </DataProvider>,
 )

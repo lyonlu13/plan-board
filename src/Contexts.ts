@@ -1,4 +1,4 @@
-import { InterObjectData } from 'interObjects/define/interObject'
+import { InterObject, InterObjectData } from 'interObjects/define/interObject'
 
 export interface GeometricContextInterface {
   select: boolean
@@ -71,4 +71,34 @@ export interface DataContextInterface {
 export const DataDefault: DataContextInterface = {
   datas: {},
   setDatas: (newVal: DataBulk) => {},
+}
+
+export interface ObjectBulk {
+  [id: string]: InterObject
+}
+export interface ObjectContextInterface {
+  objects: ObjectBulk
+  setObjects: (newVal: ObjectBulk) => void
+  selectedList: string[]
+  select: (target: string[], keep?: boolean) => void
+  startDrag: (starter: string) => void
+  stopDrag: () => void
+}
+
+export const ObjectDefault: ObjectContextInterface = {
+  objects: {},
+  setObjects: (newVal: ObjectBulk) => {},
+  selectedList: [],
+  select: (newVal: string[], keep?: boolean) => {},
+  startDrag: (starter: string) => {},
+  stopDrag: () => {},
+}
+export interface DataFlowContextInterface {
+  buildLine: (a: string, b: number) => void
+  lining: boolean
+}
+
+export const DataFlowDefault: DataFlowContextInterface = {
+  buildLine: (a: string, b: number) => {},
+  lining: false,
 }

@@ -19,3 +19,45 @@ body {
   height: 100vh;
   overflow: hidden;
 }
+
+.myControlClassName {
+  padding: 0px 5px !important;
+  border-radius: 5px !important;
+  font-size: 16px;
+}
+
+.Dropdown-option {
+  padding: 0px 5px !important;
+  font-size: 16px !important ;
+}
+
+.Dropdown-option.is-selected {
+  background-color: #535353 !important;
+  color: white !important;
+}
+
+.Dropdown-arrow {
+  top: 8px !important;
+}
+
+.plaintext {
+  -webkit-user-modify: read-write-plaintext-only;
+}
+
+* {
+  user-select: none;
+}
+
+.unselectable {
+  pointer-events: none;
+}
+
+.selectable {
+  transition: 0.2s;
+  cursor: pointer;
+  color: rgb(255, 187, 0);
+}
+
+.selectable:hover {
+  color: rgb(0, 183, 255);
+}

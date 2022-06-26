@@ -127,11 +127,7 @@ export default function Header() {
           <TitleText onClick={() => setEditing(true)}>{title}</TitleText>
         )}
       </Title>
-      <GeoTools
-        onMouseLeave={() => {
-          ReactTooltip.hide()
-        }}
-      >
+      <GeoTools>
         <Button
           data-tip="Zoom Out"
           onClick={() => {

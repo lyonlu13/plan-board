@@ -15,7 +15,7 @@ const Root = styled.div`
   display: flex;
   flex-direction: column;
   position: fixed;
-  width: 220px;
+  width: 250px;
   z-index: 2;
   right: 15px;
   top: 15px;

@@ -30,7 +30,9 @@ export default function Grid() {
         backgroundSize: `${20 * zoom}px ${20 * zoom}px`,
         backgroundPositionX: `${offsetX}px`,
         backgroundPositionY: `${offsetY}px`,
-        transition: geoTransition ? '0.3s' : '20ms',
+        transition: geoTransition
+          ? 'all 0.3s, backgroundSize 0.3s'
+          : 'all 20ms, backgroundSize 0.3s',
       }}
     >
       <BaseGrid
@@ -40,7 +42,9 @@ export default function Grid() {
           backgroundSize: `${200 * zoom}px ${200 * zoom}px`,
           backgroundPositionX: `${offsetX}px`,
           backgroundPositionY: `${offsetY}px`,
-          transition: geoTransition ? '0.3s' : '20ms',
+          transition: geoTransition
+            ? 'all 0.3s, backgroundSize 0.3s'
+            : 'all 20ms, backgroundSize 0.3s',
         }}
       />
     </BaseGrid>

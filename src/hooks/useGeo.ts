@@ -1,5 +1,6 @@
 import { AprcCtx, GeoCtx } from 'components/logical/StateProvider'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { Position } from 'interObjects/define/interObject'
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import useViewPort from './useViewPort'
 
 export default function useGeo() {
@@ -29,6 +30,7 @@ export default function useGeo() {
   } = useContext(GeoCtx)
 
   const { setGeoTransition } = useContext(AprcCtx)
+  const transitionRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     function onMouseUpdate(e: MouseEvent) {
@@ -97,7 +99,8 @@ export default function useGeo() {
       else if (event.wheelDelta >= 120) nZoom = zoom + 0.1
       zoomTo(nZoom, x, y)
       setGeoTransition(true)
-      setTimeout(() => setGeoTransition(false), 300)
+      if (transitionRef.current) clearTimeout(transitionRef.current)
+      transitionRef.current = setTimeout(() => setGeoTransition(false), 300)
     }
     window.addEventListener('mousewheel', onMousewheel, { passive: false })
     return () => {
@@ -108,6 +111,13 @@ export default function useGeo() {
   function setOffset(x?: number, y?: number) {
     x !== undefined && setOffsetX(x)
     y !== undefined && setOffsetY(y)
+  }
+
+  function realToPos(real: Position) {
+    return {
+      x: (real.x - offsetX) / zoom,
+      y: (real.y - offsetY) / zoom,
+    }
   }
 
   return {
@@ -123,5 +133,6 @@ export default function useGeo() {
     y,
     lastX,
     lastY,
+    realToPos,
   }
 }

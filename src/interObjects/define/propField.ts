@@ -1,17 +1,22 @@
+import { GroupBase } from 'react-select'
+import { ImageSource } from './data'
+
 export enum PropFieldType {
   Text,
   Number,
+  Number2D,
   Color,
   Select,
   Check,
   ToggleGroup,
   Info,
+  Image,
 }
 
 export interface PropField {
   label: string
   type: PropFieldType
-  caseTo: String
+  caseTo: string
 }
 
 export interface TextPropField extends PropField {
@@ -31,14 +36,22 @@ export interface NumberPropField extends PropField {
   adjustBtn?: boolean
   unit?: string
 }
-
-export interface SelectPropField<type = number> extends PropField {
-  type: PropFieldType.Select
-  isFont: boolean
-  valueType: 'number' | 'string'
-  items?: { text: string; value: type }[]
+export interface Number2DPropField extends PropField {
+  type: PropFieldType.Number2D
+  midSymbol?: string
+  desc1?: string
+  desc2?: string
+}
+export interface SelectOption {
+  readonly value: string
+  readonly label: string
 }
 
+export interface SelectPropField extends PropField {
+  type: PropFieldType.Select
+  isFont: boolean
+  items?: SelectOption[]
+}
 export interface ToggleGroupPropField extends PropField {
   type: PropFieldType.ToggleGroup
   items: { icon: string; tip: string }[]
@@ -48,4 +61,8 @@ export interface ToggleGroupPropField extends PropField {
 export interface InfoPropField extends PropField {
   type: PropFieldType.Info
   multiline?: boolean
+}
+
+export interface ImagePropField extends PropField {
+  type: PropFieldType.Image
 }

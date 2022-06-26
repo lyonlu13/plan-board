@@ -1,64 +1,102 @@
 import styled from 'styled-components'
-import LocBase from 'interObjects/LocBase'
+import LocBase from 'interObjects/struct/LocBase'
 import useData from 'hooks/useData'
-import { TextSketchData } from './Text'
+import { SketchTextData } from '../../define/data'
 import ContentEditable from 'react-contenteditable'
-import { useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
+import { InterObjectComponentProps } from 'interObjects/define/interObject'
+import useObject from 'hooks/useObject'
+import Frame from 'interObjects/struct/Frame'
 
-const Frame = styled.div`
-  padding: 5px;
-  cursor: move;
-  transition: 0.2s;
-  &:hover {
-    box-shadow: 0 0 2px 1px #009faa;
-  }
-  text-align: left;
-`
-
-interface Props {
-  id: string
-  x: number
-  y: number
-}
-
-export default function SketchText({ id, x, y }: Props) {
+const SketchText: FC<InterObjectComponentProps> = ({
+  id,
+  x,
+  y,
+  selected,
+}: InterObjectComponentProps) => {
+  const { select } = useObject(id)
   const { data: rawData, modify } = useData(id)
-  const data = rawData as TextSketchData
-  const [text, setText] = useState('')
-  const mount = useRef(false)
+  const [editing, setEditing] = useState(false)
+  const data = rawData as SketchTextData
+  const ref = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    if (text !== data.text) setText(data.text)
-  }, [data])
-
-  useEffect(() => {
-    if (mount.current && text !== data.text) {
-      const debounce = setTimeout(() => modify('text', text), 500)
-      return () => {
-        clearTimeout(debounce)
+    if (editing) {
+      let range = document.createRange()
+      let sel = window.getSelection()
+      if (ref.current) {
+        range.selectNodeContents(ref.current)
+        sel?.removeAllRanges()
+        sel?.addRange(range)
       }
-    } else mount.current = true
-  }, [text, modify])
+    }
+  }, [editing])
+
+  if (!data) return null
+
+  const decoration = [
+    data.line.over && 'overline',
+    data.line.through && 'line-through',
+    data.line.under && 'underline',
+  ]
+    .filter((d) => !!d)
+    .join(' ')
+
+  let align = ''
+  if (data.align.left) align = 'left'
+  else if (data.align.center) align = 'center'
+  else if (data.align.justify) align = 'justify'
+  else if (data.align.right) align = 'right'
 
   return (
-    <LocBase x={x} y={y}>
-      <Frame>
+    <LocBase id={id} x={x} y={y}>
+      <Frame
+        padding={5}
+        id={id}
+        onDoubleClick={(e) => {
+          if (!data.permanent || editing) return
+          setEditing(true)
+        }}
+      >
         <ContentEditable
+          innerRef={ref}
+          className="plaintext"
           style={{
-            fontSize: data.fontSize,
+            whiteSpace: data.maxWidth ? 'normal' : 'nowrap',
+            fontSize: data.size + 'px',
+            fontFamily: data.font,
             color: data.color.foreground,
             backgroundColor: data.color.background,
             cursor: 'text',
             outline: 'none',
-            onChange: '',
             minWidth: '50px',
+            width: data.maxWidth ? data.maxWidth : 'auto',
             display: 'inline-block',
+            userSelect: selected || editing ? 'text' : 'none',
+            fontWeight: data.style.bold && 'bold',
+            fontStyle: data.style.italic && 'italic',
+            textDecoration: decoration,
+            pointerEvents: !editing && data.permanent ? 'none' : 'auto',
+            textAlign: align,
           }}
-          html={text} // innerHTML of the editable div
-          tagName="a" // Use a custom HTML tag (uses a div by default)
-          onChange={(e) => setText(e.target.value)}
+          disabled={!selected}
+          html={data.text}
+          tagName="div"
+          onChange={(e) => modify('text', e.target.value)}
+          onFocus={() => {
+            select()
+          }}
+          onMouseDown={(e) => {
+            select()
+            e.stopPropagation()
+          }}
+          onBlur={(e) => {
+            setEditing(false)
+          }}
         />
       </Frame>
     </LocBase>
   )
 }
+
+export default SketchText

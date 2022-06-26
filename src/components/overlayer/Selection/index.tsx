@@ -8,6 +8,7 @@ const Root = styled.div`
   border: #ffffff85 2px solid;
   background-color: #d3d3d31d;
   z-index: 2;
+  pointer-events: none;
 `
 
 export default function Selection() {
