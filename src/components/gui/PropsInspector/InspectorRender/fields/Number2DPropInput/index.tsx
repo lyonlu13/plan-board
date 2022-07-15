@@ -67,6 +67,7 @@ export default function Number2DPropInput({
         type="number"
         value={values[0] || ''}
         onChange={(e) => onChange([parseInt(e.target.value), values[1]])}
+        onKeyDown={(e)=>e.stopPropagation()}
       />
       {numberField.midSymbol}
       <Input
@@ -74,6 +75,7 @@ export default function Number2DPropInput({
         type="number"
         value={values[1] || ''}
         onChange={(e) => onChange([values[0], parseInt(e.target.value)])}
+        onKeyDown={(e)=>e.stopPropagation()}
       />
       {numberField.desc2}
     </Root>

@@ -50,6 +50,7 @@ export default function NumberPropInput({
         type="number"
         value={value || ''}
         onChange={(e) => onChange(parseInt(e.target.value))}
+        onKeyDown={(e)=>e.stopPropagation()}
       />
       {numberField.unit}
     </div>

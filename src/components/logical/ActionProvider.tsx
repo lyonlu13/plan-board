@@ -116,7 +116,7 @@ export default function ActionProvider({ children }: Props) {
       y: placeRecord.current.y - offsetY,
     })
 
-    const data = LookupDefault[info.name]
+    const data = LookupDefault[info.name].mutate("id", id)
     new_objects[id] = obj
     new_datas[id] = data
     setObjects(new_objects)
@@ -144,6 +144,7 @@ export default function ActionProvider({ children }: Props) {
         <Panel>
           {Object.keys(LookupSketch).map((key) => (
             <Item
+              key={key}
               onClick={() => {
                 newObj(LookupSketch[key])
               }}
@@ -158,6 +159,7 @@ export default function ActionProvider({ children }: Props) {
         <Panel>
           {Object.keys(LookupBlock).map((key) => (
             <Item
+            key={key}
               onClick={() => {
                 newObj(LookupBlock[key])
               }}
@@ -172,6 +174,7 @@ export default function ActionProvider({ children }: Props) {
         <Panel>
           {Object.keys(LookupProcessor).map((key) => (
             <Item
+            key={key}
               onClick={() => {
                 newObj(LookupProcessor[key])
               }}
@@ -209,7 +212,7 @@ function Item({ onClick, info }: ItemProps) {
   return (
     <ItemRoot onClick={onClick}>
       <Icon size={36} icon={info.icon} color="#ffffff" />
-      {info.name}
+      {info.displayName}
     </ItemRoot>
   )
 }

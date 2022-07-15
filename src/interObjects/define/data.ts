@@ -1,32 +1,32 @@
-import { InterObjectData } from 'interObjects/define/interObject'
-import { stringify } from 'querystring'
+import { InterObjectData } from "interObjects/define/interObject";
+import { stringify } from "querystring";
 
 export class SketchTextData extends InterObjectData {
-  text!: string
-  subname: string = 'sketchText'
-  maxWidth!: number
-  size!: number
+  text!: string;
+  subname: string = "sketchText";
+  maxWidth!: number;
+  size!: number;
   color!: {
-    foreground: string
-    background: string
-  }
-  font!: string
+    foreground: string;
+    background: string;
+  };
+  font!: string;
   style!: {
-    bold: boolean
-    italic: boolean
-  }
+    bold: boolean;
+    italic: boolean;
+  };
   line!: {
-    over: false
-    through: false
-    under: false
-  }
-  permanent!: boolean
+    over: false;
+    through: false;
+    under: false;
+  };
+  permanent!: boolean;
   align!: {
-    left: boolean
-    center: boolean
-    justify: boolean
-    right: boolean
-  }
+    left: boolean;
+    center: boolean;
+    justify: boolean;
+    right: boolean;
+  };
   // loadFromJSON(json: string) {
   //   const obj: any = JSON.parse(json)
   //   this.name =
@@ -67,7 +67,7 @@ export class SketchTextData extends InterObjectData {
 }
 
 export function SketchTextDataDefault(): SketchTextData {
-  return new SketchTextData('New Text').loadFromJSON(`{
+  return new SketchTextData().loadFromJSON(`{
   "name": "New Text",
   "maxWidth":0,
   "text": "New Text Here...",
@@ -91,34 +91,34 @@ export function SketchTextDataDefault(): SketchTextData {
   },
   "permanent": true
 }
-`)
+`);
 }
 
 export interface ImageSource {
-  type: 'none' | 'url' | 'store'
-  sourceStr: string
+  type: "none" | "url" | "store";
+  sourceStr: string;
 }
 
 export class SketchImageData extends InterObjectData {
-  subname: string = 'sketchImage'
-  source!: ImageSource
+  subname: string = "sketchImage";
+  source!: ImageSource;
   dim!: {
     resizeMode: {
-      none: boolean
-      both: boolean
-      h: boolean
-      v: boolean
-    }
-    width: number
-    height: number
-  }
+      none: boolean;
+      both: boolean;
+      h: boolean;
+      v: boolean;
+    };
+    width: number;
+    height: number;
+  };
   flip!: {
-    h: boolean
-    v: boolean
-  }
+    h: boolean;
+    v: boolean;
+  };
 }
 export function SketchImageDataDefault(): SketchImageData {
-  return new SketchImageData('New Image').loadFromJSON(`{
+  return new SketchImageData().loadFromJSON(`{
   "name": "New Image",
   "source":{
     "type": "url",
@@ -139,117 +139,133 @@ export function SketchImageDataDefault(): SketchImageData {
     "v" : false
   }
 }
-`)
+`);
+}
+
+export class SketchIconData extends InterObjectData {
+  subname: string = "sketchIcon";
+  icon!: string;
+  size!: number;
+  color!: string;
+}
+export function SketchIconDataDefault(): SketchIconData {
+  return new SketchIconData().loadFromJSON(`{
+  "name": "New Icon",
+  "icon": "MdEmojiEmotions",
+  "size": 45,
+  "color": "white"
+}
+`);
 }
 
 export class BlockTextData extends InterObjectData {
-  subname: string = 'blockText'
-  maxWidth!: number
-  text!: string
+  subname: string = "blockText";
+  maxWidth!: number;
+  text!: string;
   input(args: any[]) {
-    this.text = args[0].toString()
+    this.text = args[0].toString();
   }
   output(): any[] {
-    return [this.text]
+    return [this.text];
   }
   passive() {
-    return this.ports.in[0]
+    return this.ports.in[0];
   }
 }
 export function BlockTextDataDefault(): BlockTextData {
-  return new BlockTextData('New Text').loadFromJSON(`{
+  return new BlockTextData().loadFromJSON(`{
   "maxWidth": 180,
   "text":"input something..."
 }
-`)
+`);
 }
 
 export class ProcessorTextCountData extends InterObjectData {
-  subname: string = 'processorTextCount'
-  text: string = ''
+  subname: string = "processorTextCount";
+  text: string = "";
   input(args: any[]) {
-    this.text = JSON.stringify(args[0])
+    this.text = JSON.stringify(args[0]);
   }
   output(): any[] {
     return [
       this.text.length,
-      this.text.split(' ').filter((w) => w !== ' ' && w !== '').length,
-    ]
+      this.text.split(" ").filter((w) => w !== " " && w !== "").length,
+    ];
   }
   passive() {
-    return this.ports.in[0]
+    return this.ports.in[0];
   }
 }
 
 export class ProcessorConcatData extends InterObjectData {
-  subname: string = 'processorConcat'
-  text1: string = ''
-  text2: string = ''
-  delimiter: string = ''
+  subname: string = "processorConcat";
+  text1: string = "";
+  text2: string = "";
+  delimiter: string = "";
   input(args: any[]) {
-    this.text1 = args[0] || ''
-    this.text2 = args[1] || ''
+    this.text1 = args[0] || "";
+    this.text2 = args[1] || "";
   }
   output(): any[] {
-    return [this.text1 + this.delimiter + this.text2]
+    return [this.text1 + this.delimiter + this.text2];
   }
   nameRender() {
-    return this.delimiter ? `Concat with "${this.delimiter}"` : 'Concat'
+    return this.delimiter ? `Concat with "${this.delimiter}"` : "Concat";
   }
 }
 
 export class ProcessorArrayData extends InterObjectData {
-  subname: string = 'processorArray'
-  count: number = 3
-  array: any[] = []
+  subname: string = "processorArray";
+  count: number = 3;
+  array: any[] = [];
   input(args: any[]) {
-    this.array = args
+    this.array = args;
   }
   output(): any[] {
-    return [[...this.array]]
+    return [[...this.array]];
   }
   nameRender() {
-    return `Array[${Math.max(this.count, 1)}]`
+    return `Array[${Math.max(this.count, 1)}]`;
   }
   dynamicPorts(): {
-    inputs: { title: string }[]
-    outputs: { title: string }[]
+    inputs: { title: string }[];
+    outputs: { title: string }[];
   } {
     return {
       inputs: Array.from(Array(Math.max(this.count, 1)).keys()).map((key) => ({
         title: `Obj${key + 1}`,
       })),
       outputs: [{ title: `Array[${Math.max(this.count, 1)}]` }],
-    }
+    };
   }
 }
 
 export class ProcessorJoinData extends InterObjectData {
-  subname: string = 'processorJoin'
-  delimiter: string = ''
-  array: any[] = []
+  subname: string = "processorJoin";
+  delimiter: string = "";
+  array: any[] = [];
   input(args: any[]) {
-    this.array = args[0]
+    this.array = args[0];
   }
   output(): any[] {
-    return [this.array.join(this.delimiter)]
+    return [this.array.join(this.delimiter)];
   }
   nameRender() {
-    return this.delimiter ? `Join with "${this.delimiter}"` : 'Join'
+    return this.delimiter ? `Join with "${this.delimiter}"` : "Join";
   }
 }
 
 export class ProcessorSplitData extends InterObjectData {
-  subname: string = 'processorSplit'
-  delimiter: string = ''
-  text: string = ''
+  subname: string = "processorSplit";
+  delimiter: string = "";
+  text: string = "";
   input(args: any[]) {
-    this.text = args[0]
+    this.text = args[0];
   }
   output(): any[] {
-    return [this.text.split(this.delimiter)]
+    return [this.text.split(this.delimiter)];
   }
   nameRender() {
-    return `Split with "${this.delimiter}"`
+    return `Split with "${this.delimiter}"`;
   }
 }

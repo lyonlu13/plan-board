@@ -1,45 +1,33 @@
 import { DataBulk, DataContextInterface, DataDefault } from 'Contexts'
+import useDB from 'hooks/useDB'
 import {
-  BlockTextDataDefault,
-  ProcessorArrayData,
-  ProcessorConcatData,
-  ProcessorJoinData,
-  ProcessorSplitData,
-  ProcessorTextCountData,
-  SketchImageDataDefault,
-  SketchTextData,
   SketchTextDataDefault,
 } from 'interObjects/define/data'
+import LoadData from 'interObjects/define/dataLoader'
+import { InterObjectData } from 'interObjects/define/interObject'
 import React, { createContext, useEffect, useState } from 'react'
 
 export const DataCtx = createContext<DataContextInterface>(DataDefault)
 
-const obj1 = SketchTextDataDefault()
-const obj2 = SketchTextDataDefault()
-const obj3 = SketchImageDataDefault()
-const obj4 = new ProcessorJoinData()
-const obj5 = BlockTextDataDefault()
-const obj6 = BlockTextDataDefault()
-const obj7 = BlockTextDataDefault()
-const obj8 = new ProcessorTextCountData()
-const obj9 = new ProcessorConcatData()
-const obj10 = new ProcessorArrayData()
-const obj11 = new ProcessorSplitData()
+const obj1 = SketchTextDataDefault().mutate("id", "default")
 
 export default function DataProvider({ children }: Props) {
   const [dataBulk, setDataBulk] = useState<DataBulk>({
     obj1,
-    obj2,
-    obj3,
-    obj4,
-    obj5,
-    obj6,
-    obj7,
-    obj8,
-    obj9,
-    obj10,
-    obj11,
   })
+
+  const {data, sync} = useDB<InterObjectData>("datas", "New", {key:"id",indexs:[],defaultData:[obj1]},LoadData)
+
+  
+  useEffect(() => {
+    setDataBulk(data)
+  },[data])
+
+  useEffect(() => {
+    const timeout = setTimeout(()=>sync(dataBulk),2000)
+    return ()=> clearTimeout(timeout)
+  },[dataBulk])
+
   return (
     <DataCtx.Provider
       value={{

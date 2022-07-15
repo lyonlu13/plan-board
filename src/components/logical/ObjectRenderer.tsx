@@ -10,7 +10,7 @@ import {
 } from 'interObjects/define/info'
 import React, { useContext } from 'react'
 import { ObjCtx } from './ObjectProvider'
-import { LookupInfo } from 'interObjects/define/lookup'
+import { LookupInterObjs } from 'interObjects/define/lookup'
 import Processor from 'interObjects/struct/Processor'
 
 export default function ObjectRenderer() {
@@ -21,8 +21,9 @@ export default function ObjectRenderer() {
       {Object.keys(objects).map((key) => {
         const obj = objects[key]
 
-        const objInfo = LookupInfo[obj.subname]
-
+        const objInfo = LookupInterObjs[obj.subname]
+        console.log(obj,objInfo);
+        
         if (objInfo) {
           if (obj.type === ObjectType.Processor) {
             return (

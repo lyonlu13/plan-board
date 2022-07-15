@@ -1,9 +1,9 @@
-import BlockText from 'interObjects/block/BlockText'
+import BlockText from "interObjects/block/BlockText";
 import {
   InterObjectInfo,
   ObjectType,
   ProcessorInfo,
-} from 'interObjects/define/interObject'
+} from "interObjects/define/interObject";
 import {
   ImagePropField,
   Number2DPropField,
@@ -12,234 +12,260 @@ import {
   SelectPropField,
   TextPropField,
   ToggleGroupPropField,
-} from 'interObjects/define/propField'
-import SketchImage from 'interObjects/sketch/SketchImage'
-import SketchText from 'interObjects/sketch/SketchText'
-import Processor from 'interObjects/struct/Processor'
+} from "interObjects/define/propField";
+import SketchIcon from "interObjects/sketch/SketchIcon";
+import SketchImage from "interObjects/sketch/SketchImage";
+import SketchText from "interObjects/sketch/SketchText";
+import Processor from "interObjects/struct/Processor";
 
 export const SketchTextInfo: InterObjectInfo = new InterObjectInfo(
   ObjectType.Sketch,
-  'SketchText',
+  "SketchText"
 )
   .prop({
     type: PropFieldType.Number,
-    label: 'Width',
+    label: "Width",
     round: 0,
-    unit: 'px',
-    caseTo: 'maxWidth',
+    unit: "px",
+    caseTo: "maxWidth",
   } as NumberPropField)
   .prop({
     type: PropFieldType.Number,
-    label: 'Size',
+    label: "Size",
     round: 0,
     adjustBtn: true,
-    unit: 'px',
-    caseTo: 'size',
+    unit: "px",
+    caseTo: "size",
     limit: {
       min: 12,
     },
   } as NumberPropField)
   .prop({
     type: PropFieldType.Select,
-    label: 'Font',
+    label: "Font",
     isFont: true,
-    caseTo: 'font',
+    caseTo: "font",
   } as SelectPropField)
   .prop({
     type: PropFieldType.ToggleGroup,
-    label: 'Style',
+    label: "Style",
     items: [
-      { icon: 'MdFormatBold', tip: 'Bold' },
-      { icon: 'MdFormatItalic', tip: 'Italic' },
+      { icon: "MdFormatBold", tip: "Bold" },
+      { icon: "MdFormatItalic", tip: "Italic" },
     ],
-    caseTo: 'style.bold|style.italic',
+    caseTo: "style.bold|style.italic",
   } as ToggleGroupPropField)
   .prop({
     type: PropFieldType.ToggleGroup,
-    label: 'Align',
+    label: "Align",
     items: [
-      { icon: 'MdFormatAlignLeft', tip: 'Left' },
-      { icon: 'MdFormatAlignCenter', tip: 'Center' },
-      { icon: 'MdFormatAlignJustify', tip: 'Justify' },
-      { icon: 'MdFormatAlignRight', tip: 'Right' },
+      { icon: "MdFormatAlignLeft", tip: "Left" },
+      { icon: "MdFormatAlignCenter", tip: "Center" },
+      { icon: "MdFormatAlignJustify", tip: "Justify" },
+      { icon: "MdFormatAlignRight", tip: "Right" },
     ],
-    caseTo: 'align.left|align.center|align.justify|align.right',
+    caseTo: "align.left|align.center|align.justify|align.right",
     unique: true,
   } as ToggleGroupPropField)
   .prop({
     type: PropFieldType.ToggleGroup,
-    label: 'Line',
+    label: "Line",
     items: [
-      { icon: 'TbOverline', tip: 'Overline' },
-      { icon: 'TbStrikethrough', tip: 'Strikethrough' },
-      { icon: 'TbUnderline', tip: 'Underline' },
+      { icon: "TbOverline", tip: "Overline" },
+      { icon: "TbStrikethrough", tip: "Strikethrough" },
+      { icon: "TbUnderline", tip: "Underline" },
     ],
-    caseTo: 'line.over|line.through|line.under',
+    caseTo: "line.over|line.through|line.under",
   } as ToggleGroupPropField)
   .prop({
     type: PropFieldType.Color,
-    label: 'Foreground Color',
-    caseTo: 'color.foreground',
+    label: "Foreground Color",
+    caseTo: "color.foreground",
   })
   .prop({
     type: PropFieldType.Color,
-    label: 'Background Color',
-    caseTo: 'color.background',
+    label: "Background Color",
+    caseTo: "color.background",
   })
   .prop({
     type: PropFieldType.Check,
-    label: 'Permanent',
-    caseTo: 'permanent',
+    label: "Permanent",
+    caseTo: "permanent",
   })
   .prop({
     type: PropFieldType.Text,
-    label: 'Text',
-    placeholder: '',
+    label: "Text",
+    placeholder: "",
     multiline: true,
-    caseTo: 'text',
+    caseTo: "text",
   } as TextPropField)
   .bind(SketchText)
-  .setIcon('MdTextFormat')
-  .setDisplayName('Sketch Text')
-  .setDescription('For general text expression')
+  .setIcon("MdTextFormat")
+  .setDisplayName("Sketch Text")
+  .setDescription("For general text expression");
 
 export const SketchImageInfo: InterObjectInfo = new InterObjectInfo(
   ObjectType.Sketch,
-  'SketchImage',
+  "SketchImage"
 )
   .prop({
     type: PropFieldType.Number2D,
-    label: 'Size',
-    desc1: 'W',
-    desc2: 'H',
-    midSymbol: 'X',
-    caseTo: 'dim.width|dim.height',
+    label: "Size",
+    desc1: "W",
+    desc2: "H",
+    midSymbol: "X",
+    caseTo: "dim.width|dim.height",
   } as Number2DPropField)
   .prop({
     type: PropFieldType.ToggleGroup,
-    label: 'Resize Mode',
+    label: "Resize Mode",
     items: [
-      { icon: 'TbForbid', tip: 'None' },
-      { icon: 'CgArrowsExpandLeft', tip: 'Both' },
-      { icon: 'TbArrowsHorizontal', tip: 'Horizontal' },
-      { icon: 'TbArrowsVertical', tip: 'Vertical' },
+      { icon: "TbForbid", tip: "None" },
+      { icon: "CgArrowsExpandLeft", tip: "Both" },
+      { icon: "TbArrowsHorizontal", tip: "Horizontal" },
+      { icon: "TbArrowsVertical", tip: "Vertical" },
     ],
     unique: true,
     caseTo:
-      'dim.resizeMode.none|dim.resizeMode.both|dim.resizeMode.h|dim.resizeMode.v',
+      "dim.resizeMode.none|dim.resizeMode.both|dim.resizeMode.h|dim.resizeMode.v",
   } as ToggleGroupPropField)
   .prop({
     type: PropFieldType.ToggleGroup,
-    label: 'Flip',
+    label: "Flip",
     items: [
-      { icon: 'TbFlipHorizontal', tip: 'Horizontal' },
-      { icon: 'TbFlipVertical', tip: 'Vertical' },
+      { icon: "TbFlipHorizontal", tip: "Horizontal" },
+      { icon: "TbFlipVertical", tip: "Vertical" },
     ],
-    caseTo: 'flip.h|flip.v',
+    caseTo: "flip.h|flip.v",
   } as ToggleGroupPropField)
   .prop({
     type: PropFieldType.Image,
-    label: 'Image Source',
-    caseTo: 'source',
+    label: "Image Source",
+    caseTo: "source",
   } as ImagePropField)
   .bind(SketchImage)
-  .setIcon('MdImage')
-  .setDisplayName('Sketch Image')
-  .setDescription('For displaying image')
+  .setIcon("MdImage")
+  .setDisplayName("Sketch Image")
+  .setDescription("For displaying image");
+
+export const SketchIconInfo: InterObjectInfo = new InterObjectInfo(
+  ObjectType.Sketch,
+  "SketchIcon"
+)
+  .prop({
+    type: PropFieldType.Text,
+    label: "Icon",
+    caseTo: "icon",
+  } as TextPropField)
+  .prop({
+    type: PropFieldType.Number,
+    label: "Size",
+    round: 0,
+    caseTo: "size",
+  } as NumberPropField)
+  .prop({
+    type: PropFieldType.Color,
+    label: "Color",
+    caseTo: "color",
+  })
+  .bind(SketchIcon)
+  .setIcon("MdEmojiEmotions")
+  .setDisplayName("Sketch Icon")
+  .setDescription("For displaying icons");
 
 export const BlockTextInfo: InterObjectInfo = new InterObjectInfo(
   ObjectType.Block,
-  'BlockText',
+  "BlockText"
 )
   .prop({
     type: PropFieldType.Number,
-    label: 'Width',
+    label: "Width",
     round: 0,
-    unit: 'px (Low to 200px)',
-    caseTo: 'maxWidth',
+    unit: "px (Low to 200px)",
+    caseTo: "maxWidth",
   } as NumberPropField)
   .prop({
     type: PropFieldType.Text,
-    label: 'Text',
-    placeholder: '',
+    label: "Text",
+    placeholder: "",
     multiline: true,
-    caseTo: 'text',
+    caseTo: "text",
   } as TextPropField)
   .bind(BlockText)
-  .setIcon('MdTextFormat')
-  .setDisplayName('Block Text')
-  .setDescription('For processable text')
+  .setIcon("MdTextFormat")
+  .setDisplayName("Block Text")
+  .setDescription("For processable text");
 
 export const ProcessorTextCountInfo: ProcessorInfo = new ProcessorInfo(
   ObjectType.Processor,
-  'ProcessorTextCount',
+  "ProcessorTextCount"
 )
-  .input(0, 'Text')
-  .output(0, 'Length')
-  .output(1, 'Words')
-  .setIcon('AiOutlineFieldNumber')
-  .setDisplayName('Text Count')
-  .setDescription('Calculate the words count and character count in the text')
+  .input(0, "Text")
+  .output(0, "Length")
+  .output(1, "Words")
+  .setIcon("AiOutlineFieldNumber")
+  .setDisplayName("Text Count")
+  .setDescription("Calculate the words count and character count in the text");
 
 export const ProcessorConcatInfo: ProcessorInfo = new ProcessorInfo(
   ObjectType.Processor,
-  'ProcessorConcat',
+  "ProcessorConcat"
 )
-  .input(0, 'Text1')
-  .input(1, 'Text2')
-  .output(0, 'Text')
+  .input(0, "Text1")
+  .input(1, "Text2")
+  .output(0, "Text")
   .prop({
     type: PropFieldType.Text,
-    label: 'Delimiter',
-    placeholder: 'Added between two sequences',
-    caseTo: 'delimiter',
+    label: "Delimiter",
+    placeholder: "Added between two sequences",
+    caseTo: "delimiter",
   } as TextPropField)
-  .setIcon('AiOutlineMergeCells')
-  .setDisplayName('Processor Concat')
-  .setDescription('Concat two sequences')
+  .setIcon("AiOutlineMergeCells")
+  .setDisplayName("Processor Concat")
+  .setDescription("Concat two sequences");
 
 export const ProcessorArrayInfo: ProcessorInfo = new ProcessorInfo(
   ObjectType.Processor,
-  'ProcessorArray',
+  "ProcessorArray"
 )
   .dp()
   .prop({
     type: PropFieldType.Number,
-    label: 'Count',
-    caseTo: 'count',
+    label: "Count",
+    caseTo: "count",
   } as NumberPropField)
-  .setIcon('VscSymbolArray')
-  .setDisplayName('Processor Array')
-  .setDescription('Generate array')
+  .setIcon("VscSymbolArray")
+  .setDisplayName("Processor Array")
+  .setDescription("Generate array");
 
 export const ProcessorJoinInfo: ProcessorInfo = new ProcessorInfo(
   ObjectType.Processor,
-  'ProcessorJoin',
+  "ProcessorJoin"
 )
-  .input(0, 'Array')
-  .output(0, 'Text')
+  .input(0, "Array")
+  .output(0, "Text")
   .prop({
     type: PropFieldType.Text,
-    label: 'Delimiter',
-    placeholder: 'Added between two sequences',
-    caseTo: 'delimiter',
+    label: "Delimiter",
+    placeholder: "Added between two sequences",
+    caseTo: "delimiter",
   } as TextPropField)
-  .setIcon('AiOutlineMergeCells')
-  .setDisplayName('Processor Join')
-  .setDescription('Join array items')
+  .setIcon("AiOutlineMergeCells")
+  .setDisplayName("Processor Join")
+  .setDescription("Join array items");
 
 export const ProcessorSplitInfo: ProcessorInfo = new ProcessorInfo(
   ObjectType.Processor,
-  'ProcessorSplit',
+  "ProcessorSplit"
 )
-  .input(0, 'Text')
-  .output(0, 'Array')
+  .input(0, "Text")
+  .output(0, "Array")
   .prop({
     type: PropFieldType.Text,
-    label: 'Delimiter',
-    placeholder: 'Split sequence with',
-    caseTo: 'delimiter',
+    label: "Delimiter",
+    placeholder: "Split sequence with",
+    caseTo: "delimiter",
   } as TextPropField)
-  .setIcon('AiOutlineSplitCells')
-  .setDisplayName('Processor Split')
-  .setDescription('Split text')
+  .setIcon("AiOutlineSplitCells")
+  .setDisplayName("Processor Split")
+  .setDescription("Split text");

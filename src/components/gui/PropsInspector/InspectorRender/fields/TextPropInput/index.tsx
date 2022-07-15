@@ -27,6 +27,7 @@ export default function TextPropInput({ value, onChange, textField }: Props) {
       }}
       html={value} // innerHTML of the editable div
       onChange={onChange}
+      onKeyDown={(e)=>e.stopPropagation()}
     />
   ) : (
     <Input
@@ -34,6 +35,7 @@ export default function TextPropInput({ value, onChange, textField }: Props) {
       placeholder={textField.placeholder}
       value={value as string}
       onChange={onChange}
+      onKeyDown={(e)=>e.stopPropagation()}
     />
   )
 }

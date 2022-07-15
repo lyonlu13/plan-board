@@ -1,6 +1,7 @@
-import { FC } from 'react'
-import { LookupInfo } from './lookup'
-import { PropField } from './propField'
+import { FC } from "react";
+import makeId from "utils/makeId";
+import { LookupInterObjs } from "./lookup";
+import { PropField } from "./propField";
 
 export enum ObjectType {
   Sketch,
@@ -10,162 +11,180 @@ export enum ObjectType {
 }
 
 export interface Position {
-  x: number
-  y: number
+  x: number;
+  y: number;
 }
 
 export class InterObject {
-  id: string
-  pos: Position
-  type: ObjectType
-  subname: string
-  constructor(type: ObjectType, subname: string, id: string) {
-    this.id = id
-    this.type = type
-    this.pos = { x: 0, y: 0 }
-    this.subname = subname
+  id: string;
+  pos: Position;
+  type: ObjectType;
+  subname: string;
+  constructor(type?: ObjectType, subname?: string, id?: string) {
+    this.id = id || "";
+    this.type = type || ObjectType.Sketch;
+    this.pos = { x: 0, y: 0 };
+    this.subname = subname || "none";
   }
   move(newPos: Position) {
-    this.pos = newPos
-    return this
+    this.pos = newPos;
+    return this;
+  }
+  load({ id, pos, type, subname }: InterObject) {
+    this.id = id;
+    this.pos = pos;
+    this.type = type;
+    this.subname = subname;
+    return this;
   }
 }
 
 export class InterObjectInfo {
-  type: ObjectType
-  displayName: string = ''
-  name: string
-  description: string = ''
-  propFields: PropField[]
-  component!: FC<InterObjectComponentProps>
-  icon: string = ''
+  type: ObjectType;
+  displayName: string = "";
+  name: string;
+  description: string = "";
+  propFields: PropField[];
+  component!: FC<InterObjectComponentProps>;
+  icon: string = "";
   constructor(type: ObjectType, name: string) {
-    this.type = type
-    this.name = name
-    this.propFields = []
+    this.type = type;
+    this.name = name;
+    this.propFields = [];
   }
   prop(pf: PropField) {
-    this.propFields.push(pf)
-    return this
+    this.propFields.push(pf);
+    return this;
   }
   bind(fc: FC<InterObjectComponentProps>) {
-    this.component = fc
-    return this
+    this.component = fc;
+    return this;
   }
   setIcon(icon: string) {
-    this.icon = icon
-    return this
+    this.icon = icon;
+    return this;
   }
   setDisplayName(displayName: string) {
-    this.displayName = displayName
-    return this
+    this.displayName = displayName;
+    return this;
   }
   setDescription(description: string) {
-    this.description = description
-    return this
+    this.description = description;
+    return this;
   }
 }
 
 export class InterObjectData {
-  subname: string = ''
-  name: string
+  id: string = makeId();
+  subname: string = "";
+  name: string;
   ports: {
-    in: boolean[]
-    out: boolean[]
-  } = { in: [], out: [] }
-  constructor(name?: string) {
-    this.name = name || 'nameless'
+    in: boolean[];
+    out: boolean[];
+  } = { in: [], out: [] };
+  constructor() {
+    this.name = "nameless";
   }
   loadFromJSON(json: string) {
-    const obj: any = JSON.parse(json)
+    const obj: any = JSON.parse(json);
     Object.keys(obj).forEach((key) => {
       if (key in this) {
-        ;(this as any)[key] = obj[key]
+        (this as any)[key] = obj[key];
       }
-    })
-    return this
+    });
+    return this;
+  }
+
+  load(obj: any) {
+    Object.keys(obj).forEach((key) => {
+      if (key in obj) {
+        (this as any)[key] = obj[key];
+      }
+    });
+    return this;
   }
   mutate(path: string, value: any) {
-    const nodeNames = path.split('.')
-    let cur = this as any
-    let depth = 0
+    const nodeNames = path.split(".");
+    let cur = this as any;
+    let depth = 0;
     while (depth < nodeNames.length - 1) {
-      const key = nodeNames[depth]
+      const key = nodeNames[depth];
       if (key in cur) {
-        cur = cur[key]
-        depth++
+        cur = cur[key];
+        depth++;
       } else {
-        return null
+        return this;
       }
     }
-    cur[nodeNames[nodeNames.length - 1]] = value
+    cur[nodeNames[nodeNames.length - 1]] = value;
+    return this;
   }
   getProp(path: string) {
-    const nodeNames = path.split('.')
-    let cur = this as any
-    let depth = 0
+    const nodeNames = path.split(".");
+    let cur = this as any;
+    let depth = 0;
     while (depth < nodeNames.length - 1) {
-      const key = nodeNames[depth]
+      const key = nodeNames[depth];
       if (key in cur) {
-        cur = cur[key]
-        depth++
+        cur = cur[key];
+        depth++;
       } else {
-        return null
+        return null;
       }
     }
-    return cur[nodeNames[nodeNames.length - 1]]
+    return cur[nodeNames[nodeNames.length - 1]];
   }
   input(args: any[]) {}
   output(): any[] {
-    return []
+    return [];
   }
   passive() {
-    return false
+    return false;
   }
   nameRender(): string | null {
-    return null
+    return null;
   }
   dynamicPorts(): {
-    inputs: { title: string }[]
-    outputs: { title: string }[]
+    inputs: { title: string }[];
+    outputs: { title: string }[];
   } {
-    return { inputs: [], outputs: [] }
+    return { inputs: [], outputs: [] };
   }
 }
 
 export interface InterObjectComponentProps {
-  id: string
-  x: number
-  y: number
-  selected: boolean
+  id: string;
+  x: number;
+  y: number;
+  selected: boolean;
 }
 
 export interface ProcessorComponentProps {
-  id: string
-  x: number
-  y: number
-  selected: boolean
-  info: ProcessorInfo
+  id: string;
+  x: number;
+  y: number;
+  selected: boolean;
+  info: ProcessorInfo;
 }
 
 export class ProcessorInfo extends InterObjectInfo {
-  inputs: { title: string }[] = []
-  outputs: { title: string }[] = []
-  dynamicPort: boolean = false
+  inputs: { title: string }[] = [];
+  outputs: { title: string }[] = [];
+  dynamicPort: boolean = false;
   prop(pf: PropField) {
-    this.propFields.push(pf)
-    return this
+    this.propFields.push(pf);
+    return this;
   }
   input(port: number, title: string) {
-    this.inputs[port] = { title }
-    return this
+    this.inputs[port] = { title };
+    return this;
   }
   output(port: number, title: string) {
-    this.outputs[port] = { title }
-    return this
+    this.outputs[port] = { title };
+    return this;
   }
   dp() {
-    this.dynamicPort = true
-    return this
+    this.dynamicPort = true;
+    return this;
   }
 }

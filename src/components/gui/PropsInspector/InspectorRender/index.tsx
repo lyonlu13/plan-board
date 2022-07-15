@@ -22,7 +22,7 @@ import ToggleGroupPropInput, {
 import { useEffect, useRef } from 'react'
 import Number2DPropInput from './fields/Number2DPropInput'
 import ImagePropInput from './fields/ImagePropInput'
-import { LookupInfo } from 'interObjects/define/lookup'
+import { LookupInterObjs } from 'interObjects/define/lookup'
 
 const Root = styled.div`
   width: 100%;
@@ -50,7 +50,7 @@ const Lab = styled.div`
 export default function InspectorRender({ id }: Props) {
   const { object } = useObject(id)
   const { data, modify, multiModify } = useData(id)
-  const info: InterObjectInfo = LookupInfo[object?.subname]
+  const info: InterObjectInfo = LookupInterObjs[object?.subname]
   const ref = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {

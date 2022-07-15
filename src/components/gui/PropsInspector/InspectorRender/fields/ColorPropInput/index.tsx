@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { SketchPicker } from 'react-color'
 import { GiEmptyChessboard } from 'react-icons/gi'
 
@@ -28,9 +28,8 @@ const Button = styled.span`
   }
 `
 const Popover = styled.div`
-  position: absolute;
+  position: fixed;
   z-index: 2;
-  top: 25px;
 `
 const Cover = styled.div`
   position: fixed;
@@ -42,11 +41,14 @@ const Cover = styled.div`
 
 export default function ColorPropInput({ value, onChange }: Props) {
   const [open, setOpen] = useState<boolean>(false)
+  const ref = useRef<HTMLDivElement|null>(null)
   return (
-    <Root>
+    <Root ref={ref}>
       <Color style={{ backgroundColor: value }} onClick={() => setOpen(true)}>
         {open ? (
-          <Popover>
+          <Popover style={{
+            top:(ref.current?.getBoundingClientRect().top||0)+30,
+            left:ref.current?.getBoundingClientRect().left}}>
             <Cover
               onMouseDown={(e) => {
                 setOpen(false)

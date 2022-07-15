@@ -15,6 +15,7 @@ import styled from 'styled-components'
 import useViewPort from 'hooks/useViewPort'
 import { DataCtx } from './DataProvider'
 import makeId from 'utils/makeId'
+import useDB from 'hooks/useDB'
 
 export const DFCtx = createContext<DataFlowContextInterface>(DataFlowDefault)
 
@@ -30,16 +31,26 @@ const SVG = styled.svg`
 
 const avg = (a: number, b: number) => (a + b) / 2
 
+class DataLink {
+  id:string = "";
+  in:string = "";
+  inPort: number = 0;
+  out: string = "" ;
+  outPort: number = 0;
+  load(obj:any){
+    Object.keys(obj).forEach((key) => {
+      if (key in obj) {
+        (this as any)[key] = obj[key];
+      }
+    });
+    return this;
+  }
+}
+
 export default function DataFlowProvider({ children }: Props) {
   const [lines, setLines] = useState<
-    {
-      id: string
-      in: string
-      inPort: number
-      out: string
-      outPort: number
-    }[]
-  >([])
+    {[_:string]:DataLink}
+  >({})
 
   const { vw, vh } = useViewPort()
   const { x, y } = useGeo()
@@ -55,6 +66,17 @@ export default function DataFlowProvider({ children }: Props) {
     out: string
     outPort: number
   } | null>(null)
+  
+  const {data, sync} = useDB<DataLink>("flows", "New", {key:"id",indexs:[],defaultData:[]})
+
+  useEffect(() => {
+    setLines(data)
+  },[data])
+
+  useEffect(() => {
+    const timeout = setTimeout(()=>sync(lines),2000)
+    return ()=> clearTimeout(timeout)
+  },[lines])
 
   useEffect(() => {
     const update = setInterval(() => {
@@ -70,7 +92,8 @@ export default function DataFlowProvider({ children }: Props) {
     const hash: { [key: string]: boolean } = {}
     const candidates: string[] = []
     const parsed: { [key: string]: { deps: string[]; ports: number[] } } = {}
-    lineSel.forEach((line) => {
+    Object.keys(lineSel).forEach((key) => {
+      const line = lineSel[key]
       if (!hash[line.in]) {
         hash[line.in] = true
         candidates.push(line.in)
@@ -91,9 +114,15 @@ export default function DataFlowProvider({ children }: Props) {
           const cand = parsed[candidates[j]]
           const parameters: any[] = []
           cand.deps.forEach((dep, i) => {
+            console.log("getoutput", nDatas[dep]);
+            
             parameters.push(nDatas[dep].output()[cand.ports[i]])
           })
+          console.log("input for",nDatas[candidates[j]].id,"with",parameters);
+          console.log(nDatas[candidates[j]]);
           nDatas[candidates[j]].input(parameters)
+          console.log(nDatas[candidates[j]]);
+          
           candidates.splice(j, 1)
         }
       }
@@ -115,12 +144,16 @@ export default function DataFlowProvider({ children }: Props) {
   }, [])
 
   function removeLine(id: string) {
-    const tar = lines.find((l) => l.id === id)
+    const tar = lines[id]
     if (tar) {
       const nDatas = cloneDeep(datas)
       nDatas[tar.in].ports.in[tar.inPort] = false
       setDatas(nDatas)
-      setLines(filter(lines, (l) => l.id !== id))
+      const nLines = cloneDeep(lines)
+      if(nLines[id]){
+        delete nLines[id]
+      setLines(nLines)
+    }
     }
   }
 
@@ -133,13 +166,14 @@ export default function DataFlowProvider({ children }: Props) {
         return
       }
       const nLines = cloneDeep(lines)
-      nLines.push({
-        id: makeId(),
+      const linkId = makeId();
+      nLines[linkId] = (new DataLink().load({
+        id: linkId,
         out: lineInfo.out,
         outPort: lineInfo.outPort,
         in: id,
         inPort: port,
-      })
+      }))
       const nDatas = cloneDeep(datas)
       nDatas[id].ports.in[port] = true
       setDatas(nDatas)
@@ -176,7 +210,8 @@ export default function DataFlowProvider({ children }: Props) {
 
               return null
             })()}
-            {lines.map((line) => {
+            {Object.keys(lines).map((key) => {
+              const line = lines[key]
               const ele1 = document.querySelector(
                 `#inter-obj-${line.out} #out${line.outPort}`,
               )

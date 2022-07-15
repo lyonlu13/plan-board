@@ -99,10 +99,11 @@ export default function Processor({ id, x, y, info }: ProcessorComponentProps) {
         <Plate>
           <Column>
             {(() => {
+              if(!data) return null;
               let inputs = info.inputs
               if (info.dynamicPort) inputs = data.dynamicPorts().inputs
               return inputs.map((input, i) => (
-                <Node>
+                <Node key={input.title}>
                   <MdArrowRight
                     className={
                       lining && !data.ports.in[i]
@@ -120,13 +121,14 @@ export default function Processor({ id, x, y, info }: ProcessorComponentProps) {
               ))
             })()}
           </Column>
-          <Title>{data.nameRender() || info.name}</Title>
+          <Title>{data?.nameRender() || info.displayName}</Title>
           <Column>
             {(() => {
               let outputs = info.outputs
+              if(!data) return null;
               if (info.dynamicPort) outputs = data.dynamicPorts().outputs
               return outputs.map((output, i) => (
-                <Node>
+                <Node key={output.title}>
                   {output.title}
                   <MdArrowRight
                     className={!lining ? 'selectable' : 'unselectable'}

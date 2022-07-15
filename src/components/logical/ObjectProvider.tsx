@@ -1,25 +1,21 @@
 import {
-  DataBulk,
-  DataContextInterface,
-  DataDefault,
   ObjectBulk,
   ObjectContextInterface,
   ObjectDefault,
 } from 'Contexts'
 import {
   InterObject,
-  InterObjectInfo,
   ObjectType,
   Position,
 } from 'interObjects/define/interObject'
-import { SketchTextInfo } from 'interObjects/define/info'
 import React, { createContext, useEffect, useRef, useState } from 'react'
 import useGeo from 'hooks/useGeo'
 import { cloneDeep, uniq } from 'lodash'
+import useDB from 'hooks/useDB'
 
 export const ObjCtx = createContext<ObjectContextInterface>(ObjectDefault)
 
-const obj1 = new InterObject(ObjectType.Sketch, 'SketchText', 'obj1').move({
+const obj1 = new InterObject(ObjectType.Sketch, 'SketchText', 'default').move({
   x: -100,
   y: -100,
 })
@@ -39,6 +35,8 @@ export default function ObjectProvider({ children }: Props) {
   const [objBulk, setObjBulk] = useState<ObjectBulk>({
     obj1,
   })
+
+  const {data, sync} = useDB<InterObject>("objects", "New", {key:"id",indexs:[],defaultData:[obj1]},(data)=>new InterObject().load(data))
 
   const { lastX, lastY, x, y, select: selecting, realToPos } = useGeo()
   const [selected, setSelected] = useState<string[]>([])
@@ -60,6 +58,10 @@ export default function ObjectProvider({ children }: Props) {
       B.top > A.bottom
     return !nonIntersect
   }
+
+  useEffect(() => {
+    setObjBulk(data)
+  },[data])
 
   useEffect(() => {
     function mousedown(e: MouseEvent) {
@@ -109,6 +111,14 @@ export default function ObjectProvider({ children }: Props) {
       document.removeEventListener('keyup', keyup)
     }
   }, [lastX, x, lastY, y, selecting])
+
+  useEffect(()=>{
+    const timeout = setTimeout(()=>{
+      sync(objBulk)
+    },2000)
+
+    return ()=>clearTimeout(timeout)
+  },[objBulk])
 
   useEffect(() => {
     function mousemove(e: MouseEvent) {
