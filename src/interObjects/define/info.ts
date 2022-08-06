@@ -15,6 +15,7 @@ import {
 } from "interObjects/define/propField";
 import SketchIcon from "interObjects/sketch/SketchIcon";
 import SketchImage from "interObjects/sketch/SketchImage";
+import SketchLink from "interObjects/sketch/SketchLink";
 import SketchText from "interObjects/sketch/SketchText";
 import Processor from "interObjects/struct/Processor";
 
@@ -172,6 +173,40 @@ export const SketchIconInfo: InterObjectInfo = new InterObjectInfo(
   .setIcon("MdEmojiEmotions")
   .setDisplayName("Sketch Icon")
   .setDescription("For displaying icons");
+
+export const SketchLinkInfo: InterObjectInfo = new InterObjectInfo(
+  ObjectType.Sketch,
+  "SketchLink"
+)
+  .prop({
+    type: PropFieldType.Text,
+    label: "Link",
+    caseTo: "link",
+  })
+  .prop({
+    type: PropFieldType.Number,
+    label: "Size",
+    caseTo: "size",
+  })
+  .prop({
+    type: PropFieldType.Check,
+    label: "Simple Link",
+    caseTo: "simple",
+  })
+  .prop({
+    type: PropFieldType.Check,
+    label: "Image",
+    caseTo: "image",
+  })
+  .prop({
+    type: PropFieldType.Check,
+    label: "Description",
+    caseTo: "description",
+  })
+  .bind(SketchLink)
+  .setIcon("MdLink")
+  .setDisplayName("Sketch Link")
+  .setDescription("Link");
 
 export const BlockTextInfo: InterObjectInfo = new InterObjectInfo(
   ObjectType.Block,

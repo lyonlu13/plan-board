@@ -158,6 +158,26 @@ export function SketchIconDataDefault(): SketchIconData {
 `);
 }
 
+export class SketchLinkData extends InterObjectData {
+  subname: string = "sketchLink";
+  link!: string;
+  size!: number;
+  simple!: boolean;
+  image!: boolean;
+  description!: boolean;
+}
+
+export function SketchLinkDataDefault(): SketchLinkData {
+  return new SketchLinkData().loadFromJSON(`{
+  "link": "https://mail.google.com/",
+  "size": 12,
+  "simple": false,
+  "image": true,
+  "description": true
+}
+`);
+}
+
 export class BlockTextData extends InterObjectData {
   subname: string = "blockText";
   maxWidth!: number;

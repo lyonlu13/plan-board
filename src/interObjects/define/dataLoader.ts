@@ -7,6 +7,7 @@ import {
   ProcessorTextCountData,
   SketchIconData,
   SketchImageData,
+  SketchLinkData,
   SketchTextData,
 } from "./data";
 import { InterObjectData } from "./interObject";
@@ -19,6 +20,8 @@ export default function LoadData(data: any): InterObjectData {
       return new SketchImageData().load(data);
     case "sketchIcon":
       return new SketchIconData().load(data);
+    case "sketchLink":
+      return new SketchLinkData().load(data);
     case "blockText":
       return new BlockTextData().load(data);
     case "processorText":

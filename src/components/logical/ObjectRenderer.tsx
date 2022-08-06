@@ -22,7 +22,6 @@ export default function ObjectRenderer() {
         const obj = objects[key]
 
         const objInfo = LookupInterObjs[obj.subname]
-        console.log(obj,objInfo);
         
         if (objInfo) {
           if (obj.type === ObjectType.Processor) {
