@@ -1,32 +1,39 @@
-import { DataBulk, DataContextInterface, DataDefault } from 'Contexts'
-import useDB from 'hooks/useDB'
-import {
-  SketchTextDataDefault,
-} from 'interObjects/define/data'
-import LoadData from 'interObjects/define/dataLoader'
-import { InterObjectData } from 'interObjects/define/interObject'
-import React, { createContext, useEffect, useState } from 'react'
+import { DataBulk, DataContextInterface, DataDefault } from "Contexts";
+import useDB from "hooks/useDB";
+import { SketchTextDataDefault } from "interObjects/define/data";
+import LoadData from "interObjects/define/dataLoader";
+import { InterObjectData } from "interObjects/define/interObject";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { BoardCtx } from "./BoardProvider";
 
-export const DataCtx = createContext<DataContextInterface>(DataDefault)
+export const DataCtx = createContext<DataContextInterface>(DataDefault);
 
-const obj1 = SketchTextDataDefault().mutate("id", "default")
+const obj1 = SketchTextDataDefault().mutate("id", "default");
 
 export default function DataProvider({ children }: Props) {
   const [dataBulk, setDataBulk] = useState<DataBulk>({
     obj1,
-  })
+  });
 
-  const {data, sync} = useDB<InterObjectData>("datas", "New", {key:"id",indexs:[],defaultData:[obj1]},LoadData)
+  const { current, boards, syncObjectList } = useContext(BoardCtx);
 
-  
+  const board = boards[current];
+
+  const { data, sync } = useDB<InterObjectData>(
+    "datas",
+    board.id,
+    { key: "id", indexs: [], defaultData: [obj1] },
+    LoadData
+  );
+
   useEffect(() => {
-    setDataBulk(data)
-  },[data])
+    if (data) setDataBulk(data);
+  }, [data]);
 
   useEffect(() => {
-    const timeout = setTimeout(()=>sync(dataBulk),2000)
-    return ()=> clearTimeout(timeout)
-  },[dataBulk])
+    const timeout = setTimeout(() => sync(dataBulk), 2000);
+    return () => clearTimeout(timeout);
+  }, [dataBulk]);
 
   return (
     <DataCtx.Provider
@@ -37,9 +44,9 @@ export default function DataProvider({ children }: Props) {
     >
       {children}
     </DataCtx.Provider>
-  )
+  );
 }
 
 interface Props {
-  children: React.ReactNode
+  children: React.ReactNode;
 }

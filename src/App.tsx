@@ -9,16 +9,7 @@ import useAppearance from "hooks/useAppearance";
 import RightPanel from "components/gui/RightPanel";
 import PropsInspector from "components/gui/PropsInspector";
 import ObjectRenderer from "components/logical/ObjectRenderer";
-import DataLine from "components/overlayer/DataLine";
-import Model from "components/common/Model";
-import { MdBallot, MdBrush } from "react-icons/md";
-import {
-  LookupBlock,
-  LookupProcessor,
-  LookupSketch,
-} from "interObjects/define/lookup";
-import { TbCpu } from "react-icons/tb";
-import { divide } from "lodash";
+import ObjectInspector from "components/gui/ObjectInspector";
 
 function App() {
   const { offsetX, offsetY, zoom, grab, x, y } = useGeo();
@@ -33,6 +24,7 @@ function App() {
       <Header />
       <RightPanel>
         <PropsInspector />
+        <ObjectInspector />
       </RightPanel>
       <Grid />
       {<Selection />}

@@ -15,7 +15,7 @@ export default function useDB<T>(
   process?: (data: any) => T
 ) {
   const [db, setDb] = useState<IDBDatabase | null>(null);
-  const [data, setData] = useState<{ [_: string]: T }>({});
+  const [data, setData] = useState<{ [_: string]: T } | null>(null);
 
   useEffect(() => {
     var request = indexedDB.open(dbName, 2);
@@ -89,6 +89,7 @@ export default function useDB<T>(
   }
 
   function sync(newData: { [_: string]: T }) {
+    if (!data) return;
     if (isEqual(newData, data)) return;
     // new and update
     Object.keys(newData).forEach((key) => {

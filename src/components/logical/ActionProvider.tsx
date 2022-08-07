@@ -1,15 +1,7 @@
 import Icon from "components/common/Icon";
 import Model from "components/common/Model";
-import {
-  ActionContextInterface,
-  ActionDefault,
-  AppearanceContextInterface,
-  AprcDefault,
-  GeoDefault,
-  GeometricContextInterface,
-} from "Contexts";
+import { ActionContextInterface, ActionDefault } from "Contexts";
 import useGeo from "hooks/useGeo";
-import parser from "html-metadata-parser";
 import {
   InterObject,
   InterObjectInfo,
@@ -32,7 +24,6 @@ import React, {
 } from "react";
 import { MdBallot, MdBrush } from "react-icons/md";
 import { TbCpu } from "react-icons/tb";
-import Select from "react-select/dist/declarations/src/Select";
 import styled from "styled-components";
 import makeId from "utils/makeId";
 import { DataCtx } from "./DataProvider";
@@ -58,7 +49,14 @@ export default function ActionProvider({ children }: Props) {
   const [showNewModel, setShowNewModel] = useState<boolean>(false);
   const { offsetX, offsetY } = useGeo();
 
-  const { objects, setObjects, selectedList, select } = useContext(ObjCtx);
+  const {
+    objects,
+    setObjects,
+    objectList,
+    setObjectList,
+    selectedList,
+    select,
+  } = useContext(ObjCtx);
   const { datas, setDatas } = useContext(DataCtx);
   const placeRecord = useRef<Position>({ x: 0, y: 0 });
   function showNewInterObjectModel() {
@@ -90,12 +88,15 @@ export default function ActionProvider({ children }: Props) {
         if (selectedList.length > 0) {
           const new_objects = cloneDeep(objects);
           const new_datas = cloneDeep(datas);
+          let new_object_list = [...objectList];
           selectedList.forEach((id) => {
             delete new_objects[id];
             delete new_datas[id];
+            new_object_list = new_object_list.filter((v) => v !== id);
           });
           select([]);
           setObjects(new_objects);
+          setObjectList(new_object_list);
           setDatas(new_datas);
         }
       }
@@ -121,6 +122,7 @@ export default function ActionProvider({ children }: Props) {
     new_objects[id] = obj;
     new_datas[id] = data;
     setObjects(new_objects);
+    setObjectList([...objectList, id]);
     setDatas(new_datas);
     setShowNewModel(false);
   }

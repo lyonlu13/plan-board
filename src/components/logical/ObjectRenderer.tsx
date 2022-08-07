@@ -1,28 +1,19 @@
-import {
-  InterObjectInfo,
-  ObjectType,
-  ProcessorInfo,
-} from 'interObjects/define/interObject'
-import {
-  BlockTextInfo,
-  SketchImageInfo,
-  SketchTextInfo,
-} from 'interObjects/define/info'
-import React, { useContext } from 'react'
-import { ObjCtx } from './ObjectProvider'
-import { LookupInterObjs } from 'interObjects/define/lookup'
-import Processor from 'interObjects/struct/Processor'
+import { ObjectType, ProcessorInfo } from "interObjects/define/interObject";
+import React, { useContext } from "react";
+import { ObjCtx } from "./ObjectProvider";
+import { LookupInterObjs } from "interObjects/define/lookup";
+import Processor from "interObjects/struct/Processor";
 
 export default function ObjectRenderer() {
-  const { objects, selectedList } = useContext(ObjCtx)
+  const { objects, objectList, selectedList } = useContext(ObjCtx);
 
   return (
     <>
-      {Object.keys(objects).map((key) => {
-        const obj = objects[key]
+      {objectList.map((key) => {
+        const obj = objects[key];
+        if (!obj) return null;
+        const objInfo = LookupInterObjs[obj.subname];
 
-        const objInfo = LookupInterObjs[obj.subname]
-        
         if (objInfo) {
           if (obj.type === ObjectType.Processor) {
             return (
@@ -34,9 +25,9 @@ export default function ObjectRenderer() {
                 selected={selectedList.indexOf(key) !== -1}
                 info={objInfo as ProcessorInfo}
               />
-            )
+            );
           } else {
-            const Cmp = objInfo.component
+            const Cmp = objInfo.component;
             return (
               <Cmp
                 key={key}
@@ -45,10 +36,10 @@ export default function ObjectRenderer() {
                 y={obj.pos.y}
                 selected={selectedList.indexOf(key) !== -1}
               />
-            )
+            );
           }
-        } else return null
+        } else return null;
       })}
     </>
-  )
+  );
 }

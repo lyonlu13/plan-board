@@ -40,7 +40,7 @@ const SketchLink: FC<InterObjectComponentProps> = ({
   }
 
   useEffect(() => {
-    if (!data?.link) return;
+    if (!data?.link || data?.simple) return;
     setLoading(true);
     if (!attempt) {
       fetch(data.link);
@@ -55,7 +55,7 @@ const SketchLink: FC<InterObjectComponentProps> = ({
     setDesc("");
     setImage("");
     return () => clearTimeout(timeout);
-  }, [data?.link]);
+  }, [data?.link, data?.simple]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -63,7 +63,7 @@ const SketchLink: FC<InterObjectComponentProps> = ({
         setWidth(titleRef.current.clientWidth);
       }
     }, 100);
-  }, [title, desc, image, data.size]);
+  }, [title, desc, image, data?.size]);
 
   if (!data) return null;
 
@@ -103,7 +103,7 @@ const SketchLink: FC<InterObjectComponentProps> = ({
                 >
                   {(!data.simple && title) || data.link}
                 </a>
-                {loading && (
+                {loading && !data?.simple && (
                   <div className="lds-ring">
                     <div></div>
                     <div></div>
