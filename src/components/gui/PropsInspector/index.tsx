@@ -1,8 +1,8 @@
-import styled from 'styled-components'
-import { MdInfo } from 'react-icons/md'
-import { useContext } from 'react'
-import { ObjCtx } from 'components/logical/ObjectProvider'
-import InspectorRender from './InspectorRender'
+import styled from "styled-components";
+import { MdInfo } from "react-icons/md";
+import { useContext } from "react";
+import { ObjCtx } from "components/logical/ObjectProvider";
+import InspectorRender from "./InspectorRender";
 
 const Root = styled.div`
   display: flex;
@@ -16,20 +16,20 @@ const Root = styled.div`
   z-index: 2;
   border-radius: 10px;
   transition: 0.3s;
-`
+`;
 
 const Title = styled.div`
   font-size: 16px;
-`
+`;
 
 const HR = styled.hr`
   width: 100%;
   border-color: white;
   margin: 0px 0px 5px 0px;
-`
+`;
 
 export default function PropsInspector() {
-  const { selectedList } = useContext(ObjCtx)
+  const { selectedList } = useContext(ObjCtx);
 
   return (
     <Root onMouseDown={(e) => e.stopPropagation()}>
@@ -37,9 +37,7 @@ export default function PropsInspector() {
         <MdInfo /> Property
       </Title>
       <HR />
-      {JSON.stringify(selectedList)}
-      <HR />
       {selectedList.length === 1 && <InspectorRender id={selectedList[0]} />}
     </Root>
-  )
+  );
 }

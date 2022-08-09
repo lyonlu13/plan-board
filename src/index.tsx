@@ -9,23 +9,26 @@ import ObjectProvider from "components/logical/ObjectProvider";
 import DataFlowProvider from "components/logical/DataFlowProvider";
 import ActionProvider from "components/logical/ActionProvider";
 import BoardProvider from "components/logical/BoardProvider";
+import MediaProvider from "components/logical/MediaProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <BoardProvider>
-    <DataProvider>
-      <StateProvider>
-        <DataFlowProvider>
-          <ObjectProvider>
-            <ActionProvider>
-              <App />
-            </ActionProvider>
-          </ObjectProvider>
-        </DataFlowProvider>
-      </StateProvider>
-    </DataProvider>
+    <MediaProvider>
+      <DataProvider>
+        <StateProvider>
+          <DataFlowProvider>
+            <ObjectProvider>
+              <ActionProvider>
+                <App />
+              </ActionProvider>
+            </ObjectProvider>
+          </DataFlowProvider>
+        </StateProvider>
+      </DataProvider>
+    </MediaProvider>
   </BoardProvider>
 );
 

@@ -16,6 +16,7 @@ import { cloneDeep, uniq } from "lodash";
 import useDB from "hooks/useDB";
 import useLinearDB from "hooks/useLinearDB";
 import { BoardCtx } from "./BoardProvider";
+import useAssociateDB from "hooks/useAssociateDB";
 
 export const ObjCtx = createContext<ObjectContextInterface>(ObjectDefault);
 
@@ -45,9 +46,9 @@ export default function ObjectProvider({ children }: Props) {
 
   const board = boards[current];
 
-  const { data, sync } = useDB<InterObject>(
-    "objects",
+  const { data, sync } = useAssociateDB<InterObject>(
     current,
+    "objects",
     { key: "id", indexs: [], defaultData: [obj1] },
     (data) => new InterObject().load(data)
   );
@@ -78,8 +79,6 @@ export default function ObjectProvider({ children }: Props) {
   }, [data]);
 
   useEffect(() => {
-    console.log(boards);
-
     setObjList(board.objList);
   }, [board]);
 
@@ -141,8 +140,6 @@ export default function ObjectProvider({ children }: Props) {
   }, [objBulk]);
 
   useEffect(() => {
-    console.log("11");
-
     const timeout = setTimeout(() => {
       syncObjectList(objList);
     }, 2000);

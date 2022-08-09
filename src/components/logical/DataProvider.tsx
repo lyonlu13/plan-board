@@ -1,4 +1,5 @@
 import { DataBulk, DataContextInterface, DataDefault } from "Contexts";
+import useAssociateDB from "hooks/useAssociateDB";
 import useDB from "hooks/useDB";
 import { SketchTextDataDefault } from "interObjects/define/data";
 import LoadData from "interObjects/define/dataLoader";
@@ -19,9 +20,9 @@ export default function DataProvider({ children }: Props) {
 
   const board = boards[current];
 
-  const { data, sync } = useDB<InterObjectData>(
-    "datas",
+  const { data, sync } = useAssociateDB<InterObjectData>(
     board.id,
+    "datas",
     { key: "id", indexs: [], defaultData: [obj1] },
     LoadData
   );

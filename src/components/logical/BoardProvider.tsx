@@ -7,6 +7,7 @@ import { Board } from "define/board";
 import useDB from "hooks/useDB";
 import useLinearDB from "hooks/useLinearDB";
 import { cloneDeep } from "lodash";
+import makeId from "utils/makeId";
 
 export const BoardCtx = createContext<BoardContextInterface>(BoardDefault);
 
@@ -72,6 +73,20 @@ export default function BoardProvider({ children }: Props) {
     syncBoards(newBoards);
   }
 
+  function newBoard(title?: string) {
+    if (!boardList) return;
+    const newBoards = cloneDeep(boards);
+    const board = new Board(makeId(), title || "New Board", ["default"]);
+    newBoards[board.id] = board;
+    syncBoards(newBoards);
+    const newBoardList = [...boardList, board.id];
+    syncBoards(newBoards);
+    syncBoardList(newBoardList);
+    setBoards(newBoards);
+    setBoardList(newBoardList);
+    setCurrent(board.id);
+  }
+
   return (
     <>
       <BoardCtx.Provider
@@ -82,6 +97,7 @@ export default function BoardProvider({ children }: Props) {
           boards,
           syncObjectList,
           setTitle,
+          newBoard,
         }}
       >
         {boards && children}

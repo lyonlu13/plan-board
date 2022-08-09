@@ -30,6 +30,11 @@ const HR = styled.hr`
   margin: 0px 0px 5px 0px;
 `;
 
+const List = styled.div`
+  overflow: auto;
+  height: 250px;
+`;
+
 export default function ObjectInspector() {
   const { selectedList, objectList, objects } = useContext(ObjCtx);
   const { datas } = useContext(DataCtx);
@@ -40,20 +45,22 @@ export default function ObjectInspector() {
         <MdAccountTree /> Objects
       </Title>
       <HR />
-      {objectList.map((key) => {
-        const obj = objects[key];
-        const data = datas[key];
-        if (obj && data)
-          return (
-            <ObjectInspectorItem
-              key={data.id}
-              name={data.name}
-              icon={LookupInterObjs[obj.subname].icon}
-              selected={selectedList.indexOf(key) > -1}
-            />
-          );
-        return null;
-      })}
+      <List>
+        {objectList.map((key) => {
+          const obj = objects[key];
+          const data = datas[key];
+          if (obj && data)
+            return (
+              <ObjectInspectorItem
+                key={data.id}
+                name={data.name}
+                icon={LookupInterObjs[obj.subname].icon}
+                selected={selectedList.indexOf(key) > -1}
+              />
+            );
+          return null;
+        })}
+      </List>
     </Root>
   );
 }

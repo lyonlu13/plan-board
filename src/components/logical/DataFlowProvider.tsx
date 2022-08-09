@@ -17,6 +17,7 @@ import { DataCtx } from "./DataProvider";
 import makeId from "utils/makeId";
 import useDB from "hooks/useDB";
 import { BoardCtx } from "./BoardProvider";
+import useAssociateDB from "hooks/useAssociateDB";
 
 export const DFCtx = createContext<DataFlowContextInterface>(DataFlowDefault);
 
@@ -68,7 +69,7 @@ export default function DataFlowProvider({ children }: Props) {
 
   const { current, boards, boardList } = useContext(BoardCtx);
 
-  const { data, sync } = useDB<DataLink>("flows", current, {
+  const { data, sync } = useAssociateDB<DataLink>(current, "flows", {
     key: "id",
     indexs: [],
     defaultData: [],

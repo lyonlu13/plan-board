@@ -21,7 +21,6 @@ const Root = styled.div`
   flex-direction: column;
   gap: 10px;
   position: fixed;
-  height: 50px;
   z-index: 2;
   left: 15px;
   top: 15px;
@@ -96,6 +95,8 @@ export default function Header() {
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
+  const [menu, setMenu] = useState(false);
+
   const { current, boards, setTitle } = useContext(BoardCtx);
   const board = boards[current];
   useEffect(() => {
@@ -120,6 +121,7 @@ export default function Header() {
             style={{
               marginRight: 10,
             }}
+            onClick={() => setMenu(!menu)}
           >
             <HiMenu />
           </Button>
@@ -144,9 +146,6 @@ export default function Header() {
           ) : (
             <TitleText onClick={() => setEditing(true)}>{board.name}</TitleText>
           )}
-          <Button data-tip="Other Board">
-            <MdArrowDropDown />
-          </Button>
         </Title>
         <GeoTools>
           <Button
@@ -189,7 +188,7 @@ export default function Header() {
           <Icon icon="Md" color="red" size={24} />
         </GeoTools>
       </Column>
-      <BoardList />
+      <BoardList open={menu} />
     </Root>
   );
 }

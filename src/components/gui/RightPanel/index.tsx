@@ -15,12 +15,13 @@ const Root = styled.div`
   display: flex;
   flex-direction: column;
   position: fixed;
-  width: 250px;
-  height: 90vh;
+  width: 300px;
+  height: 100vh;
   justify-content: space-between;
   z-index: 2;
-  right: 15px;
-  top: 15px;
+  right: 0px;
+  top: 0px;
+  padding: 15px;
   gap: 15px;
 `;
 
