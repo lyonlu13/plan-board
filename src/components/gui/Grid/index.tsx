@@ -1,7 +1,7 @@
-import useAppearance from 'hooks/useAppearance'
-import useGeo from 'hooks/useGeo'
-import useViewPort from 'hooks/useViewPort'
-import styled from 'styled-components'
+import useAppearance from "hooks/useAppearance";
+import useGeo from "hooks/useGeo";
+import useViewPort from "hooks/useViewPort";
+import styled from "styled-components";
 
 const BaseGrid = styled.div`
   background-color: transparent;
@@ -15,12 +15,12 @@ const BaseGrid = styled.div`
       transparent 1px 100%
     )`};
   user-select: none;
-`
+`;
 
 export default function Grid() {
-  const { zoom, offsetX, offsetY } = useGeo()
-  const { geoTransition } = useAppearance()
-  const { vh } = useViewPort()
+  const { zoom, offsetX, offsetY } = useGeo();
+  const { geoTransition } = useAppearance();
+  const { vh } = useViewPort();
 
   return (
     <BaseGrid
@@ -31,8 +31,8 @@ export default function Grid() {
         backgroundPositionX: `${offsetX}px`,
         backgroundPositionY: `${offsetY}px`,
         transition: geoTransition
-          ? 'all 0.3s, backgroundSize 0.3s'
-          : 'all 20ms, backgroundSize 0.3s',
+          ? "all 0.3s, backgroundSize 0.3s"
+          : "backgroundSize 0.3s",
       }}
     >
       <BaseGrid
@@ -43,10 +43,10 @@ export default function Grid() {
           backgroundPositionX: `${offsetX}px`,
           backgroundPositionY: `${offsetY}px`,
           transition: geoTransition
-            ? 'all 0.3s, backgroundSize 0.3s'
-            : 'all 20ms, backgroundSize 0.3s',
+            ? "all 0.3s, backgroundSize 0.3s"
+            : "backgroundSize 0.3s",
         }}
       />
     </BaseGrid>
-  )
+  );
 }
