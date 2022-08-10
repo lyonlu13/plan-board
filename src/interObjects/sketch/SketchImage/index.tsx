@@ -1,17 +1,19 @@
-import styled from 'styled-components'
-import LocBase from 'interObjects/struct/LocBase'
-import useData from 'hooks/useData'
-import { SketchImageData, SketchTextData } from '../../define/data'
-import ContentEditable from 'react-contenteditable'
-import { FC, useEffect, useRef, useState } from 'react'
-import { InterObjectComponentProps } from 'interObjects/define/interObject'
-import useObject from 'hooks/useObject'
-import useGeo from 'hooks/useGeo'
-import Frame from 'interObjects/struct/Frame'
+import styled from "styled-components";
+import LocBase from "interObjects/struct/LocBase";
+import useData from "hooks/useData";
+import { SketchImageData, SketchTextData } from "../../define/data";
+import ContentEditable from "react-contenteditable";
+import { FC, useContext, useEffect, useRef, useState } from "react";
+import { InterObjectComponentProps } from "interObjects/define/interObject";
+import useObject from "hooks/useObject";
+import useGeo from "hooks/useGeo";
+import Frame from "interObjects/struct/Frame";
+import { switchClasses } from "@mui/material";
+import { MediaCtx } from "components/logical/MediaProvider";
 
 const Img = styled.img`
   display: block;
-`
+`;
 
 const Scaler = styled.div`
   position: absolute;
@@ -25,7 +27,7 @@ const Scaler = styled.div`
   &:hover {
     background-color: #009faa;
   }
-`
+`;
 
 const SketchImage: FC<InterObjectComponentProps> = ({
   id,
@@ -33,73 +35,95 @@ const SketchImage: FC<InterObjectComponentProps> = ({
   y,
   selected,
 }: InterObjectComponentProps) => {
-  const { data: rawData, multiModify } = useData(id)
-  const { x: geoX, y: geoY, zoom } = useGeo()
-  const data = rawData as SketchImageData
-  const [resizing, setResizing] = useState(false)
-  const lastPos = useRef({ x: 0, y: 0 })
-  const lastDim = useRef({ w: 0, h: 0 })
+  const { data: rawData, multiModify } = useData(id);
+  const { x: geoX, y: geoY, zoom } = useGeo();
+  const data = rawData as SketchImageData;
+  const [resizing, setResizing] = useState(false);
+  const lastPos = useRef({ x: 0, y: 0 });
+  const lastDim = useRef({ w: 0, h: 0 });
+  const [realUrl, setRealUrl] = useState("");
+  const { img } = useContext(MediaCtx);
 
   useEffect(() => {
     function mousemove(e: MouseEvent) {
       if (resizing) {
-        e.preventDefault()
-        let deltaX = e.clientX - lastPos.current.x
-        let deltaY = e.clientY - lastPos.current.y
-        deltaX /= zoom
-        deltaY /= zoom
+        e.preventDefault();
+        let deltaX = e.clientX - lastPos.current.x;
+        let deltaY = e.clientY - lastPos.current.y;
+        deltaX /= zoom;
+        deltaY /= zoom;
         const updateDim = {
-          'dim.width':
+          "dim.width":
             lastDim.current.w +
             (data.dim.resizeMode.h || data.dim.resizeMode.both ? deltaX : 0),
-          'dim.height':
+          "dim.height":
             lastDim.current.h +
             (data.dim.resizeMode.v || data.dim.resizeMode.both ? deltaY : 0),
-        }
+        };
         if (e.shiftKey) {
           if (deltaX > deltaY) {
-            updateDim['dim.height'] =
+            updateDim["dim.height"] =
               lastDim.current.h *
-              ((lastDim.current.w + deltaX) / lastDim.current.w)
+              ((lastDim.current.w + deltaX) / lastDim.current.w);
           } else {
-            updateDim['dim.width'] =
+            updateDim["dim.width"] =
               lastDim.current.w *
-              ((lastDim.current.h + deltaY) / lastDim.current.h)
+              ((lastDim.current.h + deltaY) / lastDim.current.h);
           }
         }
 
-        multiModify(updateDim)
+        multiModify(updateDim);
       }
     }
     function mouseup() {
-      setResizing(false)
+      setResizing(false);
     }
-    document.addEventListener('mousemove', mousemove)
-    document.addEventListener('mouseup', mouseup)
+    document.addEventListener("mousemove", mousemove);
+    document.addEventListener("mouseup", mouseup);
     return () => {
-      document.removeEventListener('mousemove', mousemove)
-      document.removeEventListener('mouseup', mouseup)
+      document.removeEventListener("mousemove", mousemove);
+      document.removeEventListener("mouseup", mouseup);
+    };
+  }, [resizing]);
+
+  useEffect(() => {
+    if (data) {
+      switch (data.source.type) {
+        case "url":
+          setRealUrl(data.source.sourceStr);
+          break;
+        case "store":
+          img(data.source.sourceStr)
+            .then((url) => {
+              setRealUrl(url);
+            })
+            .catch((e) => {
+              console.error(e);
+            });
+          break;
+        default:
+      }
     }
-  }, [resizing])
+  }, [data]);
 
   function startResize() {
     lastPos.current = {
       x: geoX,
       y: geoY,
-    }
+    };
     lastDim.current = {
       w: data.dim.width,
       h: data.dim.height,
-    }
-    setResizing(true)
+    };
+    setResizing(true);
   }
 
-  if (!data) return null
+  if (!data) return null;
 
-  let cursor = ''
-  if (data.dim.resizeMode.both) cursor = 'nwse-resize'
-  else if (data.dim.resizeMode.h) cursor = 'ew-resize'
-  else if (data.dim.resizeMode.v) cursor = 'ns-resize'
+  let cursor = "";
+  if (data.dim.resizeMode.both) cursor = "nwse-resize";
+  else if (data.dim.resizeMode.h) cursor = "ew-resize";
+  else if (data.dim.resizeMode.v) cursor = "ns-resize";
 
   return (
     <LocBase id={id} x={x} y={y}>
@@ -112,7 +136,7 @@ const SketchImage: FC<InterObjectComponentProps> = ({
               data.flip.h ? -1 : 1
             })`,
           }}
-          src={data.source.sourceStr}
+          src={realUrl}
           alt=""
         />
         <Scaler
@@ -120,16 +144,16 @@ const SketchImage: FC<InterObjectComponentProps> = ({
             cursor: cursor,
             opacity: selected && !data.dim.resizeMode.none ? 1 : 0,
             pointerEvents:
-              selected && !data.dim.resizeMode.none ? 'auto' : 'none',
+              selected && !data.dim.resizeMode.none ? "auto" : "none",
           }}
           onMouseDown={(e) => {
-            startResize()
-            e.stopPropagation()
+            startResize();
+            e.stopPropagation();
           }}
         />
       </Frame>
     </LocBase>
-  )
-}
+  );
+};
 
-export default SketchImage
+export default SketchImage;

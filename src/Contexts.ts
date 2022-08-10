@@ -84,6 +84,7 @@ export interface BoardContextInterface {
   setCurrent: (_: string) => void;
   setTitle: (_: string) => void;
   syncObjectList: (_: string[]) => void;
+  newBoard: (_?: string) => void;
 }
 
 export const BoardDefault: BoardContextInterface = {
@@ -93,6 +94,7 @@ export const BoardDefault: BoardContextInterface = {
   setCurrent: (_: string) => {},
   setTitle: (_: string) => {},
   syncObjectList: (_: string[]) => {},
+  newBoard: (_?: string) => {},
 };
 
 export interface ObjectContextInterface {
@@ -124,6 +126,18 @@ export interface DataFlowContextInterface {
 export const DataFlowDefault: DataFlowContextInterface = {
   buildLine: (a: string, b: number) => {},
   lining: false,
+};
+
+export interface MediaContextInterface {
+  newImage: (name: string, blob: Blob) => Promise<string>;
+  allImage: () => Promise<string[]>;
+  img: (id: string) => Promise<string>;
+}
+
+export const MediaDefault: MediaContextInterface = {
+  newImage: (name: string, blob: Blob) => new Promise<string>(() => {}),
+  allImage: () => new Promise<string[]>(() => {}),
+  img: (id: string) => new Promise<string>(() => {}),
 };
 
 export interface ActionContextInterface {

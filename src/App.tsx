@@ -10,6 +10,9 @@ import RightPanel from "components/gui/RightPanel";
 import PropsInspector from "components/gui/PropsInspector";
 import ObjectRenderer from "components/logical/ObjectRenderer";
 import ObjectInspector from "components/gui/ObjectInspector";
+import urlToBlob from "utils/urlToBlob";
+
+(window as unknown as any).urlToBlob = urlToBlob;
 
 function App() {
   const { offsetX, offsetY, zoom, grab, x, y } = useGeo();
