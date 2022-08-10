@@ -104,7 +104,7 @@ export default function ImagePropInput({ value, onChange, imageField }: Props) {
       <Button onClick={() => setShow(true)}>Select</Button>
       <Model
         show={show}
-        setShow={() => close()}
+        onClose={() => close()}
         title={"Image Picker"}
         icon={"MdImage"}
       >

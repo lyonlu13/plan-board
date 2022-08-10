@@ -1,7 +1,7 @@
-import { MouseEventHandler, ReactNode } from 'react'
-import { MdClose } from 'react-icons/md'
-import styled from 'styled-components'
-import Icon from '../Icon'
+import { MouseEventHandler, ReactNode } from "react";
+import { MdClose } from "react-icons/md";
+import styled from "styled-components";
+import Icon from "../Icon";
 
 const Root = styled.div`
   position: fixed;
@@ -12,7 +12,7 @@ const Root = styled.div`
   transition: 0.2s;
   z-index: 4;
   color: white;
-`
+`;
 
 const Panel = styled.div`
   position: absolute;
@@ -24,7 +24,7 @@ const Panel = styled.div`
   background-color: #3d3d3d;
   min-height: 20px;
   border-radius: 5px;
-`
+`;
 const Header = styled.div`
   display: flex;
   align-items: center;
@@ -32,7 +32,7 @@ const Header = styled.div`
   font-size: 24px;
   padding: 5px 10px;
   border-bottom: 1px solid white;
-`
+`;
 
 const Button = styled.div`
   cursor: pointer;
@@ -41,53 +41,53 @@ const Button = styled.div`
   &:hover {
     transform: rotate(90deg);
   }
-`
+`;
 
 const Title = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;
-`
+`;
 
 const Body = styled.div`
   padding: 10px;
-`
+`;
 
-export default function Model({ setShow, show, children, title, icon }: Props) {
+export default function Model({ onClose, show, children, title, icon }: Props) {
   return (
     <Root
       onMouseDown={(e) => {
-        setShow(false)
+        onClose();
       }}
       style={{
         opacity: show ? 1 : 0,
-        pointerEvents: show ? 'auto' : 'none',
+        pointerEvents: show ? "auto" : "none",
       }}
     >
       <Panel
         onMouseDown={(e) => {
-          e.stopPropagation()
+          e.stopPropagation();
         }}
       >
         <Header>
           <Title>
-            <Icon style={{ display: 'block' }} icon={icon} color="white" />
+            <Icon style={{ display: "block" }} icon={icon} color="white" />
             {title}
           </Title>
-          <Button onClick={() => setShow(false)}>
+          <Button onClick={() => onClose()}>
             <MdClose />
           </Button>
         </Header>
         <Body>{children}</Body>
       </Panel>
     </Root>
-  )
+  );
 }
 
 interface Props {
-  setShow: (val: boolean) => void
-  show: boolean
-  children: ReactNode
-  title: string
-  icon: string
+  onClose: () => void;
+  show: boolean;
+  children: ReactNode;
+  title: string;
+  icon: string;
 }
