@@ -80,7 +80,7 @@ export default function DataFlowProvider({ children }: Props) {
   }, [data]);
 
   useEffect(() => {
-    const timeout = setTimeout(() => sync(lines), 2000);
+    const timeout = setTimeout(() => sync(lines), 500);
     return () => clearTimeout(timeout);
   }, [lines]);
 

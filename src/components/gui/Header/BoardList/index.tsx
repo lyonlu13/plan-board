@@ -1,5 +1,5 @@
 import { BoardCtx } from "components/logical/BoardProvider";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { MdAdd, MdClose, MdSearch } from "react-icons/md";
 import styled from "styled-components";
 
@@ -14,7 +14,7 @@ const Root = styled.div`
   overflow: hidden;
 `;
 
-const Wapper = styled.div`
+const Wrapper = styled.div`
   padding: 10px;
 `;
 
@@ -85,6 +85,7 @@ const Button = styled.a`
 const Hover = styled.a`
   transition: 0.3s;
   color: #1c1c1c;
+  cursor: pointer;
   &:hover {
     color: gray;
   }
@@ -95,6 +96,8 @@ export default function BoardList({ open }: Props) {
     useContext(BoardCtx);
 
   const ref = useRef<HTMLDivElement | null>(null);
+
+  const [searchStr, setSearchStr] = useState("");
 
   useEffect(() => {
     const onMousewheel: EventListener = (event: any) => {
@@ -114,16 +117,26 @@ export default function BoardList({ open }: Props) {
         height: open ? 400 : 0,
       }}
     >
-      <Wapper>
+      <Wrapper>
         <ToolBar>
           <SearchBox>
             <MdSearch color="#1c1c1c" />
-            <input type="text" />
-            <Hover>
+            <input
+              value={searchStr}
+              onChange={(e) => setSearchStr(e.target.value)}
+              type="text"
+            />
+            <Hover
+              style={{
+                opacity: searchStr ? 1 : 0,
+                pointerEvents: searchStr ? "auto" : "none",
+              }}
+              onClick={() => setSearchStr("")}
+            >
               <MdClose size={18} />
             </Hover>
           </SearchBox>
-          <Button onClick={() => newBoard()}>
+          <Button onClick={() => newBoard(searchStr)}>
             <MdAdd />
           </Button>
         </ToolBar>
@@ -131,18 +144,23 @@ export default function BoardList({ open }: Props) {
           {boardList.map((id) => {
             if (!boards[id]) return null;
             const selected = id === current;
-            return (
-              <Item
-                className={selected ? "selected" : ""}
-                key={id}
-                onClick={() => setCurrent(id)}
-              >
-                {boards[id].name}
-              </Item>
-            );
+            if (
+              boards[id].name
+                .toLocaleLowerCase()
+                .includes(searchStr.toLocaleLowerCase())
+            )
+              return (
+                <Item
+                  className={selected ? "selected" : ""}
+                  key={id}
+                  onClick={() => setCurrent(id)}
+                >
+                  {boards[id].name}
+                </Item>
+              );
           })}
         </List>
-      </Wapper>
+      </Wrapper>
     </Root>
   );
 }

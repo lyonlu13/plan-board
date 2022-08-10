@@ -32,7 +32,7 @@ export default function DataProvider({ children }: Props) {
   }, [data]);
 
   useEffect(() => {
-    const timeout = setTimeout(() => sync(dataBulk), 2000);
+    const timeout = setTimeout(() => sync(dataBulk), 500);
     return () => clearTimeout(timeout);
   }, [dataBulk]);
 

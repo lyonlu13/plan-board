@@ -120,6 +120,7 @@ export default function ImagePropInput({ value, onChange, imageField }: Props) {
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={(e) => e.stopPropagation()}
+            onPaste={(e) => e.stopPropagation()}
           />
         </div>
         {valid && (

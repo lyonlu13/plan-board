@@ -48,7 +48,7 @@ export default function BoardProvider({ children }: Props) {
   useEffect(() => {
     const timeout = setTimeout(() => {
       syncBoards(boards);
-    }, 2000);
+    }, 500);
 
     return () => clearTimeout(timeout);
   }, [boards]);
@@ -56,7 +56,7 @@ export default function BoardProvider({ children }: Props) {
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (boardList) syncBoardList(boardList);
-    }, 2000);
+    }, 500);
 
     return () => clearTimeout(timeout);
   }, [boardList]);

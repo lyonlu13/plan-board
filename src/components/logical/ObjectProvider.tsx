@@ -134,7 +134,7 @@ export default function ObjectProvider({ children }: Props) {
   useEffect(() => {
     const timeout = setTimeout(() => {
       sync(objBulk);
-    }, 2000);
+    }, 500);
 
     return () => clearTimeout(timeout);
   }, [objBulk]);
@@ -142,7 +142,7 @@ export default function ObjectProvider({ children }: Props) {
   useEffect(() => {
     const timeout = setTimeout(() => {
       syncObjectList(objList);
-    }, 2000);
+    }, 500);
 
     return () => clearTimeout(timeout);
   }, [objList]);
