@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import { TextPropField } from 'interObjects/define/propField'
-import ContentEditable, { ContentEditableEvent } from 'react-contenteditable'
+import styled from "styled-components";
+import { TextPropField } from "interObjects/define/propField";
+import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
 const Input = styled.input`
   border-radius: 5px;
@@ -9,7 +9,7 @@ const Input = styled.input`
   width: 100%;
   margin-right: 5px;
   padding: 5px;
-`
+`;
 
 export default function TextPropInput({ value, onChange, textField }: Props) {
   return textField.multiline ? (
@@ -18,16 +18,17 @@ export default function TextPropInput({ value, onChange, textField }: Props) {
       placeholder={textField.placeholder}
       style={{
         borderRadius: 5,
-        outline: 'none',
-        border: 'none',
+        outline: "none",
+        border: "none",
         marginRight: 5,
         padding: 5,
-        backgroundColor: 'white',
-        color: 'black',
+        backgroundColor: "white",
+        color: "black",
       }}
       html={value} // innerHTML of the editable div
       onChange={onChange}
-      onKeyDown={(e)=>e.stopPropagation()}
+      onKeyDown={(e) => e.stopPropagation()}
+      onPaste={(e) => e.stopPropagation()}
     />
   ) : (
     <Input
@@ -35,13 +36,14 @@ export default function TextPropInput({ value, onChange, textField }: Props) {
       placeholder={textField.placeholder}
       value={value as string}
       onChange={onChange}
-      onKeyDown={(e)=>e.stopPropagation()}
+      onKeyDown={(e) => e.stopPropagation()}
+      onPaste={(e) => e.stopPropagation()}
     />
-  )
+  );
 }
 
 interface Props {
-  value: string
-  onChange: (event: ContentEditableEvent) => void
-  textField: TextPropField
+  value: string;
+  onChange: (event: ContentEditableEvent) => void;
+  textField: TextPropField;
 }

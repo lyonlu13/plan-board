@@ -6,6 +6,7 @@ import { ActionContextInterface, ActionDefault } from "Contexts";
 import useGeo from "hooks/useGeo";
 import {
   InterObject,
+  InterObjectData,
   InterObjectInfo,
   Position,
 } from "interObjects/define/interObject";
@@ -38,22 +39,36 @@ const Panel = styled.div`
   flex-wrap: wrap;
 `;
 
-export default function NewObjectModal({ show, onClose, placeRecord }: Props) {
+export interface PasteObject {
+  info: InterObjectInfo;
+  data: InterObjectData;
+}
+
+export default function PasteModal({
+  show,
+  onClose,
+  placeRecord,
+  pasteList,
+}: Props) {
   const { offsetX, offsetY } = useGeo();
 
   const { objects, setObjects, objectList, setObjectList } = useContext(ObjCtx);
   const { datas, setDatas } = useContext(DataCtx);
 
-  function newObj(info: InterObjectInfo) {
+  function newObj(pasteObj: PasteObject) {
     const id = makeId(15);
     const new_objects = cloneDeep(objects);
     const new_datas = cloneDeep(datas);
-    const obj = new InterObject(info.type, info.name, id).move({
+    const obj = new InterObject(
+      pasteObj.info.type,
+      pasteObj.info.name,
+      id
+    ).move({
       x: placeRecord.current.x - offsetX,
       y: placeRecord.current.y - offsetY,
     });
 
-    const data = LookupDefault[info.name].mutate("id", id);
+    const data = pasteObj.data.mutate("id", id);
     new_objects[id] = obj;
     new_datas[id] = data;
     setObjects(new_objects);
@@ -66,51 +81,17 @@ export default function NewObjectModal({ show, onClose, placeRecord }: Props) {
     <Model
       onClose={onClose}
       show={show}
-      title="New Interact Object"
-      icon="MdLibraryAdd"
+      title="Paste as..."
+      icon="MdContentPaste"
     >
-      <Title>
-        <MdBrush /> Sketch
-      </Title>
-      <hr />
       <Panel>
-        {Object.keys(LookupSketch).map((key) => (
+        {pasteList.map((pasteObject) => (
           <Item
-            key={key}
+            key={pasteObject.info.name}
             onClick={() => {
-              newObj(LookupSketch[key]);
+              newObj(pasteObject);
             }}
-            info={LookupSketch[key]}
-          />
-        ))}
-      </Panel>
-      <Title>
-        <MdBallot /> Block
-      </Title>
-      <hr />
-      <Panel>
-        {Object.keys(LookupBlock).map((key) => (
-          <Item
-            key={key}
-            onClick={() => {
-              newObj(LookupBlock[key]);
-            }}
-            info={LookupBlock[key]}
-          />
-        ))}
-      </Panel>
-      <Title>
-        <TbCpu /> Processor
-      </Title>
-      <hr />
-      <Panel>
-        {Object.keys(LookupProcessor).map((key) => (
-          <Item
-            key={key}
-            onClick={() => {
-              newObj(LookupProcessor[key]);
-            }}
-            info={LookupProcessor[key]}
+            info={pasteObject.info}
           />
         ))}
       </Panel>
@@ -122,6 +103,7 @@ interface Props {
   show: boolean;
   onClose: () => void;
   placeRecord: React.MutableRefObject<Position>;
+  pasteList: PasteObject[];
 }
 
 const ItemRoot = styled.div`

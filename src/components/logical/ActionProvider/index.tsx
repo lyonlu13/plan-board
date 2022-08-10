@@ -3,6 +3,11 @@ import Model from "components/common/Model";
 import { ActionContextInterface, ActionDefault } from "Contexts";
 import useGeo from "hooks/useGeo";
 import {
+  SketchImageDataDefault,
+  SketchTextDataDefault,
+} from "interObjects/define/data";
+import { SketchImageInfo, SketchTextInfo } from "interObjects/define/info";
+import {
   InterObject,
   InterObjectInfo,
   Position,
@@ -25,16 +30,21 @@ import React, {
 import { MdBallot, MdBrush } from "react-icons/md";
 import { TbCpu } from "react-icons/tb";
 import styled from "styled-components";
+import getDimFromFile from "utils/getDimFromFile";
 import makeId from "utils/makeId";
 import { DataCtx } from "../DataProvider";
+import { MediaCtx } from "../MediaProvider";
 import { ObjCtx } from "../ObjectProvider";
 import NewObjectModal from "./NewObjectModal";
+import PasteModal, { PasteObject } from "./PasteModal";
 
 export const ActionCtx = createContext<ActionContextInterface>(ActionDefault);
 
 export default function ActionProvider({ children }: Props) {
   const [showNewModel, setShowNewModel] = useState<boolean>(false);
-  const { offsetX, offsetY } = useGeo();
+  const [showPasteModel, setShowPasteModel] = useState<boolean>(false);
+  const { x, y } = useGeo();
+  const [pasteList, setPasteList] = useState<PasteObject[]>([]);
 
   const {
     objects,
@@ -44,8 +54,12 @@ export default function ActionProvider({ children }: Props) {
     selectedList,
     select,
   } = useContext(ObjCtx);
+
+  const { newImage } = useContext(MediaCtx);
+
   const { datas, setDatas } = useContext(DataCtx);
   const placeRecord = useRef<Position>({ x: 0, y: 0 });
+
   function showNewInterObjectModel() {
     setShowNewModel(true);
   }
@@ -94,31 +108,68 @@ export default function ActionProvider({ children }: Props) {
     };
   }, [objects, datas, selectedList]);
 
+  async function pasteFile(file: File) {
+    if (file.type.includes("image")) {
+      const id = await newImage("New Image", file);
+      const dim = await getDimFromFile(file);
+      return {
+        info: SketchImageInfo,
+        data: SketchImageDataDefault()
+          .mutate("source", {
+            type: "store",
+            sourceStr: id,
+          })
+          .mutate("dim.width", dim.width)
+          .mutate("dim.height", dim.height),
+      };
+    }
+  }
+
   useEffect(() => {
-    function paste(e: ClipboardEvent) {
+    async function paste(e: ClipboardEvent) {
       if (e.clipboardData === null) return;
       console.log(e.clipboardData.types);
-      e.clipboardData.types.forEach((type) => {
+      const list: PasteObject[] = [];
+      e.clipboardData.types.forEach(async (type) => {
         switch (type) {
           case "text/plain":
             console.log(type, e.clipboardData!.getData(type));
+            list.push({
+              info: SketchTextInfo,
+              data: SketchTextDataDefault().mutate(
+                "text",
+                e.clipboardData!.getData(type)
+              ),
+            });
             break;
           case "text/html":
             console.log(type, e.clipboardData!.getData(type));
+            list.push({
+              info: SketchTextInfo,
+              data: SketchTextDataDefault().mutate(
+                "text",
+                e.clipboardData!.getData(type)
+              ),
+            });
             break;
           case "Files":
             console.log(e.clipboardData!.files);
+            const obj = await pasteFile(e.clipboardData!.files[0]);
+            if (obj) list.push(obj);
             break;
           default:
             break;
         }
       });
+      placeRecord.current = { x, y };
+      setPasteList(list);
+      setShowPasteModel(true);
     }
     document.addEventListener("paste", paste);
     return () => {
       document.removeEventListener("paste", paste);
     };
-  }, []);
+  }, [x, y]);
 
   return (
     <ActionCtx.Provider
@@ -131,6 +182,12 @@ export default function ActionProvider({ children }: Props) {
         placeRecord={placeRecord}
         show={showNewModel}
         onClose={() => setShowNewModel(false)}
+      />
+      <PasteModal
+        placeRecord={placeRecord}
+        show={showPasteModel}
+        pasteList={pasteList}
+        onClose={() => setShowPasteModel(false)}
       />
     </ActionCtx.Provider>
   );
