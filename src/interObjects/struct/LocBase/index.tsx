@@ -20,13 +20,17 @@ interface Props {
 export default function LocBase({ id, x, y, children }: Props) {
   const { zoom, offsetX, offsetY } = useGeo();
   const { geoTransition } = useAppearance();
-  const { select, startDrag, stopDrag, selectedList, selected } = useObject(id);
+  const { select, startDrag, stopDrag, selectedList, selected, object } =
+    useObject(id);
   const clickDetect = useRef(0);
 
   return (
     <Root
       id={`inter-obj-${id}`}
       onMouseDown={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (object.locked) return;
         if (selected || !selectedList.length) {
           startDrag(id);
           select(true);
@@ -34,11 +38,10 @@ export default function LocBase({ id, x, y, children }: Props) {
           startDrag(id);
           select();
         }
-        e.stopPropagation();
-        e.preventDefault();
         clickDetect.current = new Date().getTime();
       }}
       onMouseUp={(e) => {
+        if (object.locked) return;
         if (new Date().getTime() - clickDetect.current < 200) {
           select();
         }
@@ -48,7 +51,11 @@ export default function LocBase({ id, x, y, children }: Props) {
         left: offsetX + x * zoom,
         top: offsetY + y * zoom,
         transform: `scale(${zoom})`,
-        transition: `${geoTransition ? "0.3s all," : ""}  0.2s box-shadow`,
+        transition: `${
+          geoTransition ? "0.3s all," : ""
+        }  0.2s box-shadow, opacity 0.3s`,
+        opacity: object.visibility ? 1 : 0,
+        pointerEvents: object.visibility || object.locked ? "none" : "auto",
       }}
     >
       {children}

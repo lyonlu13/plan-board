@@ -56,6 +56,7 @@ export default function ObjectInspector() {
                 name={data.name}
                 icon={LookupInterObjs[obj.subname].icon}
                 selected={selectedList.indexOf(key) > -1}
+                object={obj}
               />
             );
           return null;

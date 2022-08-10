@@ -20,21 +20,27 @@ export class InterObject {
   pos: Position;
   type: ObjectType;
   subname: string;
+  locked: boolean;
+  visibility: boolean;
   constructor(type?: ObjectType, subname?: string, id?: string) {
     this.id = id || "";
     this.type = type || ObjectType.Sketch;
     this.pos = { x: 0, y: 0 };
     this.subname = subname || "none";
+    this.locked = false;
+    this.visibility = true;
   }
   move(newPos: Position) {
     this.pos = newPos;
     return this;
   }
-  load({ id, pos, type, subname }: InterObject) {
+  load({ id, pos, type, subname, locked, visibility }: InterObject) {
     this.id = id;
     this.pos = pos;
     this.type = type;
     this.subname = subname;
+    this.locked = locked;
+    this.visibility = visibility;
     return this;
   }
 }

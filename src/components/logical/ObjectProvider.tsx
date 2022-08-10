@@ -65,6 +65,10 @@ export default function ObjectProvider({ children }: Props) {
     else setSelected(targets);
   }
 
+  function unselect(targets: string[]) {
+    setSelected(selected.filter((s) => !targets.includes(s)));
+  }
+
   function intersect(A: Rect, B: Rect) {
     const nonIntersect =
       B.right < A.left ||
@@ -108,7 +112,7 @@ export default function ObjectProvider({ children }: Props) {
           };
           const B = element.getBoundingClientRect();
 
-          if (intersect(A, B)) selection.push(id);
+          if (intersect(A, B) && !objBulk[id].locked) selection.push(id);
         }
       });
       select(selection);
@@ -205,6 +209,7 @@ export default function ObjectProvider({ children }: Props) {
         objectList: objList,
         setObjectList: setObjList,
         select,
+        unselect,
         selectedList: selected,
         startDrag,
         stopDrag,

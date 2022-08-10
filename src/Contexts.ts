@@ -104,6 +104,7 @@ export interface ObjectContextInterface {
   setObjectList: (newVal: string[]) => void;
   selectedList: string[];
   select: (target: string[], keep?: boolean) => void;
+  unselect: (target: string[]) => void;
   startDrag: (starter: string) => void;
   stopDrag: () => void;
 }
@@ -115,6 +116,7 @@ export const ObjectDefault: ObjectContextInterface = {
   setObjectList: (newVal: string[]) => {},
   selectedList: [],
   select: (newVal: string[], keep?: boolean) => {},
+  unselect: (val: string[]) => {},
   startDrag: (starter: string) => {},
   stopDrag: () => {},
 };
