@@ -169,6 +169,7 @@ export class SketchLinkData extends InterObjectData {
 
 export function SketchLinkDataDefault(): SketchLinkData {
   return new SketchLinkData().loadFromJSON(`{
+  "name": "New Link",
   "link": "https://mail.google.com/",
   "size": 12,
   "simple": false,
@@ -194,6 +195,7 @@ export class BlockTextData extends InterObjectData {
 }
 export function BlockTextDataDefault(): BlockTextData {
   return new BlockTextData().loadFromJSON(`{
+  "name": "New Block Text",
   "maxWidth": 180,
   "text":"input something..."
 }
@@ -201,6 +203,7 @@ export function BlockTextDataDefault(): BlockTextData {
 }
 
 export class ProcessorTextCountData extends InterObjectData {
+  name: string = "Text Count Processor";
   subname: string = "processorTextCount";
   text: string = "";
   input(args: any[]) {
@@ -218,6 +221,7 @@ export class ProcessorTextCountData extends InterObjectData {
 }
 
 export class ProcessorConcatData extends InterObjectData {
+  name: string = "Concat Processor";
   subname: string = "processorConcat";
   text1: string = "";
   text2: string = "";
@@ -235,6 +239,7 @@ export class ProcessorConcatData extends InterObjectData {
 }
 
 export class ProcessorArrayData extends InterObjectData {
+  name: string = "Array Processor";
   subname: string = "processorArray";
   count: number = 3;
   array: any[] = [];
@@ -261,6 +266,7 @@ export class ProcessorArrayData extends InterObjectData {
 }
 
 export class ProcessorJoinData extends InterObjectData {
+  name: string = "Join Processor";
   subname: string = "processorJoin";
   delimiter: string = "";
   array: any[] = [];
@@ -276,6 +282,7 @@ export class ProcessorJoinData extends InterObjectData {
 }
 
 export class ProcessorSplitData extends InterObjectData {
+  name: string = "Split Processor";
   subname: string = "processorSplit";
   delimiter: string = "";
   text: string = "";
