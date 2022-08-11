@@ -135,6 +135,7 @@ const SketchImage: FC<InterObjectComponentProps> = ({
             transform: `scaleX(${data.flip.v ? -1 : 1}) scaleY(${
               data.flip.h ? -1 : 1
             })`,
+            borderRadius: data.radius,
           }}
           src={realUrl}
           alt=""

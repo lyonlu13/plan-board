@@ -132,6 +132,17 @@ export const SketchImageInfo: InterObjectInfo = new InterObjectInfo(
       "dim.resizeMode.none|dim.resizeMode.both|dim.resizeMode.h|dim.resizeMode.v",
   } as ToggleGroupPropField)
   .prop({
+    type: PropFieldType.Number,
+    label: "Boarder Radius",
+    round: 0,
+    adjustBtn: true,
+    unit: "px",
+    caseTo: "radius",
+    limit: {
+      min: 12,
+    },
+  } as NumberPropField)
+  .prop({
     type: PropFieldType.ToggleGroup,
     label: "Flip",
     items: [

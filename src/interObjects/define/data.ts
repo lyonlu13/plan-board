@@ -112,6 +112,7 @@ export class SketchImageData extends InterObjectData {
     width: number;
     height: number;
   };
+  radius!: number;
   flip!: {
     h: boolean;
     v: boolean;
@@ -134,6 +135,7 @@ export function SketchImageDataDefault(): SketchImageData {
     "width": 400,
     "height": 200
   },
+  "radius": 0,
   "flip":{
     "h" : false,
     "v" : false
