@@ -25,8 +25,8 @@ export default function TextPropInput({ value, onChange, textField }: Props) {
         backgroundColor: "white",
         color: "black",
       }}
-      html={value} // innerHTML of the editable div
-      onChange={onChange}
+      html={value.replaceAll("<", "&lt;").replaceAll(">", "&gt;")} // innerHTML of the editable div
+      onChange={textField.readonly ? () => null : onChange}
       onKeyDown={(e) => e.stopPropagation()}
       onPaste={(e) => e.stopPropagation()}
     />
@@ -35,7 +35,7 @@ export default function TextPropInput({ value, onChange, textField }: Props) {
       type="text"
       placeholder={textField.placeholder}
       value={value as string}
-      onChange={onChange}
+      onChange={textField.readonly ? () => null : onChange}
       onKeyDown={(e) => e.stopPropagation()}
       onPaste={(e) => e.stopPropagation()}
     />

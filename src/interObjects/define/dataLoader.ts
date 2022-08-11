@@ -1,4 +1,5 @@
 import {
+  BlockRTFData,
   BlockTextData,
   ProcessorArrayData,
   ProcessorConcatData,
@@ -11,6 +12,7 @@ import {
   SketchTextData,
 } from "./data";
 import { InterObjectData } from "./interObject";
+import { LookupDefault } from "./lookup";
 
 export default function LoadData(data: any): InterObjectData {
   switch (data.subname) {
@@ -24,6 +26,8 @@ export default function LoadData(data: any): InterObjectData {
       return new SketchLinkData().load(data);
     case "blockText":
       return new BlockTextData().load(data);
+    case "blockRTF":
+      return new BlockRTFData().load(data);
     case "processorText":
       return new ProcessorTextCountData().load(data);
     case "processorConcat":

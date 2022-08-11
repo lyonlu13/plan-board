@@ -184,7 +184,10 @@ export class BlockTextData extends InterObjectData {
   maxWidth!: number;
   text!: string;
   input(args: any[]) {
-    this.text = args[0].toString();
+    this.text = args[0]
+      .toString()
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;");
   }
   output(): any[] {
     return [this.text];
@@ -193,11 +196,38 @@ export class BlockTextData extends InterObjectData {
     return this.ports.in[0];
   }
 }
+
 export function BlockTextDataDefault(): BlockTextData {
   return new BlockTextData().loadFromJSON(`{
   "name": "New Block Text",
   "maxWidth": 180,
   "text":"input something..."
+}
+`);
+}
+
+export class BlockRTFData extends InterObjectData {
+  subname: string = "blockRTF";
+  maxWidth!: number;
+  content!: string;
+  size!: number;
+  input(args: any[]) {
+    this.content = args[0];
+  }
+  output(): any[] {
+    return [this.content];
+  }
+  passive() {
+    return this.ports.in[0];
+  }
+}
+
+export function BlockRTFDataDefault(): BlockRTFData {
+  return new BlockRTFData().loadFromJSON(`{
+  "name": "New Block RTF",
+  "maxWidth": 500,
+  "content":"input something...",
+  "size": 12
 }
 `);
 }

@@ -55,7 +55,7 @@ export default function LocBase({ id, x, y, children }: Props) {
           geoTransition ? "0.3s all," : ""
         }  0.2s box-shadow, opacity 0.3s`,
         opacity: object.visibility ? 1 : 0,
-        pointerEvents: object.visibility || object.locked ? "none" : "auto",
+        pointerEvents: !object.visibility || object.locked ? "none" : "auto",
       }}
     >
       {children}

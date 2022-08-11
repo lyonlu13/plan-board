@@ -1,4 +1,5 @@
 import {
+  BlockRTFDataDefault,
   BlockTextDataDefault,
   ProcessorArrayData,
   ProcessorConcatData,
@@ -22,6 +23,7 @@ export const LookupSketch: { [id: string]: InterObjectInfo } = {
 
 export const LookupBlock: { [id: string]: InterObjectInfo } = {
   BlockText: info.BlockTextInfo,
+  BlockRTF: info.BlockRTFInfo,
 };
 
 export const LookupProcessor: { [id: string]: InterObjectInfo } = {
@@ -44,6 +46,7 @@ export const LookupDefault: { [id: string]: InterObjectData } = {
   SketchIcon: SketchIconDataDefault(),
   SketchLink: SketchLinkDataDefault(),
   BlockText: BlockTextDataDefault(),
+  BlockRTF: BlockRTFDataDefault(),
   ProcessorTextCount: new ProcessorTextCountData(),
   ProcessorConcat: new ProcessorConcatData(),
   ProcessorArray: new ProcessorArrayData(),

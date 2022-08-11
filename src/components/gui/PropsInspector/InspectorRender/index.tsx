@@ -27,7 +27,7 @@ import { LookupInterObjs } from "interObjects/define/lookup";
 const Root = styled.div`
   width: 100%;
   height: 40vh;
-  overflow-y: auto;
+  overflow-y: overlay;
 `;
 
 const Content = styled.div`

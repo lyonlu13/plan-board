@@ -1,3 +1,4 @@
+import BlockRTF from "interObjects/block/BlockRTF";
 import BlockText from "interObjects/block/BlockText";
 import {
   InterObjectInfo,
@@ -230,6 +231,37 @@ export const BlockTextInfo: InterObjectInfo = new InterObjectInfo(
   .setIcon("MdTextFormat")
   .setDisplayName("Block Text")
   .setDescription("For processable text");
+
+export const BlockRTFInfo: InterObjectInfo = new InterObjectInfo(
+  ObjectType.Block,
+  "BlockRTF"
+)
+  .prop({
+    type: PropFieldType.Number,
+    label: "Width",
+    round: 0,
+    unit: "px (Low to 320px)",
+    caseTo: "maxWidth",
+  } as NumberPropField)
+  .prop({
+    type: PropFieldType.Number,
+    label: "Size",
+    round: 0,
+    unit: "px",
+    caseTo: "size",
+  } as NumberPropField)
+  .prop({
+    type: PropFieldType.Text,
+    label: "Content",
+    placeholder: "",
+    multiline: true,
+    caseTo: "content",
+    readonly: true,
+  } as TextPropField)
+  .bind(BlockRTF)
+  .setIcon("MdTextFormat")
+  .setDisplayName("Block RTF")
+  .setDescription("For RTF text");
 
 export const ProcessorTextCountInfo: ProcessorInfo = new ProcessorInfo(
   ObjectType.Processor,

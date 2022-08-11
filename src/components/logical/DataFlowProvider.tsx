@@ -120,7 +120,12 @@ export default function DataFlowProvider({ children }: Props) {
           const cand = parsed[candidates[j]];
           const parameters: any[] = [];
           cand.deps.forEach((dep, i) => {
-            console.log("getoutput", nDatas[dep]);
+            console.log(
+              "getoutput",
+              nDatas[dep],
+              nDatas[dep].output(),
+              cand.ports[i]
+            );
 
             parameters.push(nDatas[dep].output()[cand.ports[i]]);
           });
