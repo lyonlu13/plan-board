@@ -136,7 +136,9 @@ export default function ActionProvider({ children }: Props) {
       if (e.clipboardData === null) return;
       console.log(e.clipboardData.types);
       const list: PasteObject[] = [];
-      e.clipboardData.types.forEach(async (type) => {
+
+      for (let i = 0; i < e.clipboardData.types.length; i++) {
+        const type = e.clipboardData.types[i];
         switch (type) {
           case "text/plain":
             console.log(type, e.clipboardData!.getData(type));
@@ -175,7 +177,7 @@ export default function ActionProvider({ children }: Props) {
           default:
             break;
         }
-      });
+      }
       placeRecord.current = { x, y };
       setPasteList(list);
       setShowPasteModel(true);
