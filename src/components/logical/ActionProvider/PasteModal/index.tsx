@@ -40,6 +40,7 @@ const Panel = styled.div`
 `;
 
 export interface PasteObject {
+  name?: string;
   info: InterObjectInfo;
   data: InterObjectData;
 }
@@ -92,6 +93,7 @@ export default function PasteModal({
               newObj(pasteObject);
             }}
             info={pasteObject.info}
+            name={pasteObject.name || ""}
           />
         ))}
       </Panel>
@@ -123,11 +125,11 @@ const ItemRoot = styled.div`
   }
 `;
 
-function Item({ onClick, info }: ItemProps) {
+function Item({ onClick, info, name }: ItemProps) {
   return (
     <ItemRoot onClick={onClick}>
       <Icon size={36} icon={info.icon} color="#ffffff" />
-      {info.displayName}
+      {name || info.displayName}
     </ItemRoot>
   );
 }
@@ -135,4 +137,5 @@ function Item({ onClick, info }: ItemProps) {
 interface ItemProps {
   onClick: MouseEventHandler;
   info: InterObjectInfo;
+  name: string;
 }

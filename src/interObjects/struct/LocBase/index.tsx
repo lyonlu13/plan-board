@@ -28,6 +28,10 @@ export default function LocBase({ id, x, y, children }: Props) {
     <Root
       id={`inter-obj-${id}`}
       onMouseDown={(e) => {
+        const tmp = document.createElement("input");
+        document.body.appendChild(tmp);
+        tmp.focus();
+        document.body.removeChild(tmp);
         e.stopPropagation();
         e.preventDefault();
         if (object.locked) return;

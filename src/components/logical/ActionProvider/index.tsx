@@ -2,11 +2,17 @@ import Icon from "components/common/Icon";
 import Model from "components/common/Model";
 import { ActionContextInterface, ActionDefault } from "Contexts";
 import useGeo from "hooks/useGeo";
+import BlockRTF from "interObjects/block/BlockRTF";
 import {
+  BlockRTFDataDefault,
   SketchImageDataDefault,
   SketchTextDataDefault,
 } from "interObjects/define/data";
-import { SketchImageInfo, SketchTextInfo } from "interObjects/define/info";
+import {
+  BlockRTFInfo,
+  SketchImageInfo,
+  SketchTextInfo,
+} from "interObjects/define/info";
 import {
   InterObject,
   InterObjectInfo,
@@ -140,6 +146,7 @@ export default function ActionProvider({ children }: Props) {
                 "text",
                 e.clipboardData!.getData(type)
               ),
+              name: "Plain Text",
             });
             break;
           case "text/html":
@@ -148,6 +155,14 @@ export default function ActionProvider({ children }: Props) {
               info: SketchTextInfo,
               data: SketchTextDataDefault().mutate(
                 "text",
+                e.clipboardData!.getData(type)
+              ),
+              name: "HTML",
+            });
+            list.push({
+              info: BlockRTFInfo,
+              data: BlockRTFDataDefault().mutate(
+                "content",
                 e.clipboardData!.getData(type)
               ),
             });

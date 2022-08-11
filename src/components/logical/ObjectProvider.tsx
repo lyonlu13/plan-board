@@ -90,10 +90,6 @@ export default function ObjectProvider({ children }: Props) {
     function mousedown(e: MouseEvent) {
       if (e.button === 0) {
         select([]);
-        const tmp = document.createElement("input");
-        document.body.appendChild(tmp);
-        tmp.focus();
-        document.body.removeChild(tmp);
       }
     }
     function mouseup() {
