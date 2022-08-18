@@ -181,6 +181,56 @@ export function SketchLinkDataDefault(): SketchLinkData {
 `);
 }
 
+export class SketchRegionData extends InterObjectData {
+  subname: string = "sketchRegion";
+  dim!: {
+    resizeMode: {
+      none: boolean;
+      both: boolean;
+      h: boolean;
+      v: boolean;
+    };
+    width: number;
+    height: number;
+  };
+  radius!: number;
+  thick!: number;
+  style!: {
+    solid: boolean;
+    dashed: boolean;
+    dotted: boolean;
+    double: boolean;
+  };
+  bgColor!: string
+  borderColor!: string
+}
+export function SketchRegionDataDefault(): SketchRegionData {
+  return new SketchRegionData().loadFromJSON(`{
+  "name": "New Region",
+  "dim": {
+    "resizeMode": {
+      "none" : false,
+      "both" : true,
+      "h" : false,
+      "v" : false
+    },
+    "width": 400,
+    "height": 200
+  },
+  "radius": 5,
+  "style": {
+    "solid" : true,
+    "dashed" : false,
+    "dotted" : false,
+    "double" : false
+  },
+  "thick": 4,
+  "bgColor": "transparent",
+  "borderColor": "white"
+}
+`);
+}
+
 export class BlockTextData extends InterObjectData {
   subname: string = "blockText";
   maxWidth!: number;

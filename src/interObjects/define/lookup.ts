@@ -9,6 +9,7 @@ import {
   SketchIconDataDefault,
   SketchImageDataDefault,
   SketchLinkDataDefault,
+  SketchRegionDataDefault,
   SketchTextDataDefault,
 } from "./data";
 import * as info from "./info";
@@ -19,6 +20,7 @@ export const LookupSketch: { [id: string]: InterObjectInfo } = {
   SketchImage: info.SketchImageInfo,
   SketchIcon: info.SketchIconInfo,
   SketchLink: info.SketchLinkInfo,
+  SketchRegion: info.SketchRegionInfo,
 };
 
 export const LookupBlock: { [id: string]: InterObjectInfo } = {
@@ -45,6 +47,7 @@ export const LookupDefault: { [id: string]: InterObjectData } = {
   SketchImage: SketchImageDataDefault(),
   SketchIcon: SketchIconDataDefault(),
   SketchLink: SketchLinkDataDefault(),
+  SketchRegion: SketchRegionDataDefault(),
   BlockText: BlockTextDataDefault(),
   BlockRTF: BlockRTFDataDefault(),
   ProcessorTextCount: new ProcessorTextCountData(),

@@ -17,6 +17,7 @@ import {
 import SketchIcon from "interObjects/sketch/SketchIcon";
 import SketchImage from "interObjects/sketch/SketchImage";
 import SketchLink from "interObjects/sketch/SketchLink";
+import SketchRegion from "interObjects/sketch/SketchRegion";
 import SketchText from "interObjects/sketch/SketchText";
 import Processor from "interObjects/struct/Processor";
 
@@ -219,6 +220,79 @@ export const SketchLinkInfo: InterObjectInfo = new InterObjectInfo(
   .setIcon("MdLink")
   .setDisplayName("Sketch Link")
   .setDescription("Link");
+
+export const SketchRegionInfo: InterObjectInfo = new InterObjectInfo(
+  ObjectType.Sketch,
+  "SketchRegion"
+)
+  .prop({
+    type: PropFieldType.Number2D,
+    label: "Size",
+    desc1: "W",
+    desc2: "H",
+    midSymbol: "X",
+    caseTo: "dim.width|dim.height",
+  } as Number2DPropField)
+  .prop({
+    type: PropFieldType.Number,
+    label: "Thick",
+    round: 0,
+    adjustBtn: true,
+    unit: "px",
+    caseTo: "thick",
+  } as NumberPropField)
+  .prop({
+    type: PropFieldType.ToggleGroup,
+    label: "Border Style",
+    items: [
+      { icon: "AiOutlineLine", tip: "Solid" },
+      { icon: "TbLineDashed", tip: "Dashed" },
+      { icon: "TbLineDotted", tip: "Dotted" },
+      { icon: "CgMathEqual", tip: "double" },
+    ],
+    unique: true,
+    caseTo:
+      "style.solid|style.dashed|style.dotted|style.double",
+  } as ToggleGroupPropField)
+  .prop({
+    type: PropFieldType.ToggleGroup,
+    label: "Resize Mode",
+    items: [
+      { icon: "TbForbid", tip: "None" },
+      { icon: "CgArrowsExpandLeft", tip: "Both" },
+      { icon: "TbArrowsHorizontal", tip: "Horizontal" },
+      { icon: "TbArrowsVertical", tip: "Vertical" },
+    ],
+    unique: true,
+    caseTo:
+      "dim.resizeMode.none|dim.resizeMode.both|dim.resizeMode.h|dim.resizeMode.v",
+  } as ToggleGroupPropField)
+  .prop({
+    type: PropFieldType.Number,
+    label: "Boarder Radius",
+    round: 0,
+    adjustBtn: true,
+    unit: "px",
+    caseTo: "radius",
+    limit: {
+      min: 12,
+    },
+  } as NumberPropField)
+  .prop({
+    type: PropFieldType.Color,
+    label: "Border Color",
+    caseTo: "borderColor",
+  })
+  .prop({
+    type: PropFieldType.Color,
+    label: "Background Color",
+    caseTo: "bgColor",
+  })
+  .bind(SketchRegion)
+  .setIcon("MdHighlightAlt")
+  .setDisplayName("Sketch Region")
+  .setDescription("For dividing area");
+
 
 export const BlockTextInfo: InterObjectInfo = new InterObjectInfo(
   ObjectType.Block,

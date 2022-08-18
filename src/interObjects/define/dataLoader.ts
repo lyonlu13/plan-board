@@ -9,6 +9,7 @@ import {
   SketchIconData,
   SketchImageData,
   SketchLinkData,
+  SketchRegionData,
   SketchTextData,
 } from "./data";
 import { InterObjectData } from "./interObject";
@@ -24,6 +25,8 @@ export default function LoadData(data: any): InterObjectData {
       return new SketchIconData().load(data);
     case "sketchLink":
       return new SketchLinkData().load(data);
+    case "sketchRegion":
+      return new SketchRegionData().load(data);
     case "blockText":
       return new BlockTextData().load(data);
     case "blockRTF":
