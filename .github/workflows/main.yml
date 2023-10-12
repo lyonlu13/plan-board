@@ -21,13 +21,12 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm install
+    - name: yarn install
       run: |
-        npm install
-    - name: npm run build
+        yarn install
+    - name: yarn build
       run: |
-        npm run gulp m
-        npm run build
+        yarn build
     - name: Commit files
       run: |
         cd $PUBLISH_DIR
