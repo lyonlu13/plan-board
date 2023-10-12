@@ -1,14 +1,11 @@
-import styled from "styled-components";
 import LocBase from "interObjects/struct/LocBase";
 import useData from "hooks/useData";
 import { SketchLinkData } from "../../define/data";
-import ContentEditable from "react-contenteditable";
 import { FC, useEffect, useRef, useState } from "react";
 import { InterObjectComponentProps } from "interObjects/define/interObject";
 import useObject from "hooks/useObject";
 import Frame from "interObjects/struct/Frame";
 import getInfo from "utils/getInfo";
-import { Image } from "@mui/icons-material";
 import { MdLink } from "react-icons/md";
 
 const SketchLink: FC<InterObjectComponentProps> = ({
