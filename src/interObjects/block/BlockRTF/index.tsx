@@ -1,11 +1,10 @@
 import useData from "hooks/useData";
 import { BlockRTFData } from "../../define/data";
-import ContentEditable from "react-contenteditable";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useRef } from "react";
 import { InterObjectComponentProps } from "interObjects/define/interObject";
 import useObject from "hooks/useObject";
 import Block from "interObjects/struct/Block";
-import ReactQuill, { Quill } from "react-quill";
+import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import katex from "katex";
 import "katex/dist/katex.min.css";
