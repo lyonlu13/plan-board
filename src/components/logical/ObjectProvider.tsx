@@ -56,9 +56,11 @@ export default function ObjectProvider({ children }: Props) {
   const { lastX, lastY, x, y, select: selecting, realToPos } = useGeo();
   const [selected, setSelected] = useState<string[]>([]);
   const shift = useRef<boolean>(false);
-  const dragging = useRef<boolean>(false);
+  const dragging = useRef<boolean | null>(false);
 
   const dragRecord = useRef<PosRecord>({});
+
+  const onDrop = useRef<[string, () => void][]>([]);
 
   function select(targets: string[], keep: boolean = false) {
     if (keep || shift.current) setSelected(uniq([...targets, ...selected]));
@@ -191,14 +193,10 @@ export default function ObjectProvider({ children }: Props) {
   function stopDrag() {
     dragging.current = true;
     dragRecord.current = {};
-    selected.forEach((id) => {
-      const element = document.getElementById(`inter-obj-${id}`);
-      if (element)
-        dragRecord.current[id] = {
-          x: (element.offsetLeft || 0) - x,
-          y: (element.offsetTop || 0) - y,
-        };
-    });
+    if (onDrop.current) {
+      const item = onDrop.current.pop();
+      if (item) item[1]();
+    }
   }
 
   return (
@@ -211,8 +209,10 @@ export default function ObjectProvider({ children }: Props) {
         select,
         unselect,
         selectedList: selected,
+        dragging,
         startDrag,
         stopDrag,
+        onDrop,
       }}
     >
       {children}

@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { useRef, useState } from "react";
 import { SketchPicker } from "react-color";
 import { GiEmptyChessboard } from "react-icons/gi";
+import { createPortal } from "react-dom";
+import rgbHex from "rgb-hex";
 
 const Root = styled.div`
   display: flex;
@@ -29,7 +31,7 @@ const Button = styled.span`
 `;
 const Popover = styled.div`
   position: fixed;
-  z-index: 2;
+  z-index: 10;
 `;
 const Cover = styled.div`
   position: fixed;
@@ -45,22 +47,30 @@ export default function ColorPropInput({ value, onChange }: Props) {
   return (
     <Root ref={ref} onPaste={(e) => e.stopPropagation()}>
       <Color style={{ backgroundColor: value }} onClick={() => setOpen(true)}>
-        {open ? (
-          <Popover
-            style={{
-              top: (ref.current?.getBoundingClientRect().top || 0) + 30,
-              left: ref.current?.getBoundingClientRect().left,
-            }}
-          >
-            <Cover
-              onMouseDown={(e) => {
-                setOpen(false);
-                e.stopPropagation();
+        {open &&
+          createPortal(
+            <Popover
+              style={{
+                top: (ref.current?.getBoundingClientRect().top || 0) + 30,
+                left: ref.current?.getBoundingClientRect().left,
               }}
-            />
-            <SketchPicker color={value} onChange={(e) => onChange(e.hex)} />
-          </Popover>
-        ) : null}
+            >
+              <Cover
+                onMouseDown={(e) => {
+                  setOpen(false);
+                  e.stopPropagation();
+                }}
+              />
+              <SketchPicker
+                color={value}
+                onChange={(c) =>
+                  onChange("#" + rgbHex(c.rgb.r, c.rgb.g, c.rgb.b, c.rgb.a))
+                }
+                width={"220px"}
+              />
+            </Popover>,
+            document.getElementById("root")!
+          )}
       </Color>
       <Button onClick={() => onChange("#FFFFFF00")}>
         <GiEmptyChessboard />

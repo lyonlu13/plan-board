@@ -22,6 +22,8 @@ export class InterObject {
   subname: string;
   locked: boolean;
   visibility: boolean;
+  position: "relative" | "absolute";
+  container: string;
   constructor(type?: ObjectType, subname?: string, id?: string) {
     this.id = id || "";
     this.type = type || ObjectType.Sketch;
@@ -29,18 +31,21 @@ export class InterObject {
     this.subname = subname || "none";
     this.locked = false;
     this.visibility = true;
+    this.position = "absolute";
+    this.container = "";
   }
   move(newPos: Position) {
     this.pos = newPos;
     return this;
   }
-  load({ id, pos, type, subname, locked, visibility }: InterObject) {
+  load({ id, pos, type, subname, locked, visibility, position }: InterObject) {
     this.id = id;
     this.pos = pos;
     this.type = type;
     this.subname = subname;
     this.locked = locked;
     this.visibility = visibility;
+    this.position = position;
     return this;
   }
 }
@@ -140,7 +145,7 @@ export class InterObjectData {
     }
     return cur[nodeNames[nodeNames.length - 1]];
   }
-  input(args: any[]) {}
+  input(args: any[]) { }
   output(): any[] {
     return [];
   }

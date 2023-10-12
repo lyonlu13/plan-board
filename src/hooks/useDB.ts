@@ -1,5 +1,5 @@
 import { DataCtx } from "components/logical/DataProvider";
-import { useContext, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { cloneDeep, isEqual } from "lodash";
 
 export interface DBOption<T> {
@@ -16,6 +16,7 @@ export default function useDB<T>(
 ) {
   const [db, setDb] = useState<IDBDatabase | null>(null);
   const [data, setData] = useState<{ [_: string]: T } | null>(null);
+  const needDefault = useRef<boolean>(false);
 
   useEffect(() => {
     var request = indexedDB.open(dbName, 2);
@@ -42,10 +43,16 @@ export default function useDB<T>(
       }
       setDb(db);
       setData(defaultData);
+      needDefault.current = true;
+
     };
 
     request.onsuccess = function () {
       let db = request.result;
+
+      if (needDefault.current) {
+        return;
+      }
 
       var objectStore = db.transaction(storeName).objectStore(storeName);
 

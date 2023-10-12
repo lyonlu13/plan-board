@@ -231,6 +231,66 @@ export function SketchRegionDataDefault(): SketchRegionData {
 `);
 }
 
+export class SketchLinearLayoutData extends InterObjectData {
+  subname: string = "SketchLinearLayout";
+  dim!: {
+    resizeMode: {
+      none: boolean;
+      both: boolean;
+      h: boolean;
+      v: boolean;
+    };
+    width: number;
+    height: number;
+  };
+  radius!: number;
+  thick!: number;
+  style!: {
+    solid: boolean;
+    dashed: boolean;
+    dotted: boolean;
+    double: boolean;
+  };
+  align!: {
+    vertical: boolean;
+    horizontal: boolean;
+  };
+  bgColor!: string
+  borderColor!: string
+  members!: string[]
+}
+export function SketchLinearLayoutDataDefault(): SketchLinearLayoutData {
+  return new SketchLinearLayoutData().loadFromJSON(`{
+  "name": "New Linear Layout",
+  "dim": {
+    "resizeMode": {
+      "none" : false,
+      "both" : true,
+      "h" : false,
+      "v" : false
+    },
+    "width": 400,
+    "height": 200
+  },
+  "radius": 5,
+  "style": {
+    "solid" : true,
+    "dashed" : false,
+    "dotted" : false,
+    "double" : false
+  },
+  "thick": 4,
+  "bgColor": "transparent",
+  "borderColor": "white",
+  "align": {
+    "vertical": false,
+    "horizontal": true
+  },
+  "members":[]
+}
+`);
+}
+
 export class BlockTextData extends InterObjectData {
   subname: string = "blockText";
   maxWidth!: number;

@@ -8,6 +8,7 @@ import useDB from "hooks/useDB";
 import useLinearDB from "hooks/useLinearDB";
 import { cloneDeep } from "lodash";
 import makeId from "utils/makeId";
+import { def_list } from "interObjects/define/default";
 
 export const BoardCtx = createContext<BoardContextInterface>(BoardDefault);
 
@@ -25,7 +26,7 @@ export default function BoardProvider({ children }: Props) {
     {
       key: "id",
       indexs: [],
-      defaultData: [new Board("default", "Default Board", ["default"])],
+      defaultData: [new Board("default", "Default Board", def_list)],
     },
     (data) => new Board(data.id, data.name, data.objList)
   );

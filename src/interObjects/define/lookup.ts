@@ -8,6 +8,7 @@ import {
   ProcessorTextCountData,
   SketchIconDataDefault,
   SketchImageDataDefault,
+  SketchLinearLayoutDataDefault,
   SketchLinkDataDefault,
   SketchRegionDataDefault,
   SketchTextDataDefault,
@@ -21,6 +22,7 @@ export const LookupSketch: { [id: string]: InterObjectInfo } = {
   SketchIcon: info.SketchIconInfo,
   SketchLink: info.SketchLinkInfo,
   SketchRegion: info.SketchRegionInfo,
+  SketchLinearLayout: info.SketchLinearLayoutInfo,
 };
 
 export const LookupBlock: { [id: string]: InterObjectInfo } = {
@@ -48,6 +50,7 @@ export const LookupDefault: { [id: string]: InterObjectData } = {
   SketchIcon: SketchIconDataDefault(),
   SketchLink: SketchLinkDataDefault(),
   SketchRegion: SketchRegionDataDefault(),
+  SketchLinearLayout: SketchLinearLayoutDataDefault(),
   BlockText: BlockTextDataDefault(),
   BlockRTF: BlockRTFDataDefault(),
   ProcessorTextCount: new ProcessorTextCountData(),

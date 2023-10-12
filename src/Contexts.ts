@@ -28,27 +28,27 @@ export interface GeometricContextInterface {
 
 export const GeoDefault: GeometricContextInterface = {
   select: false,
-  setSelect: (arg0: boolean) => {},
+  setSelect: (arg0: boolean) => { },
   grab: false,
-  setGrab: (arg0: boolean) => {},
+  setGrab: (arg0: boolean) => { },
   offsetX: 0,
-  setOffsetX: (arg0: number) => {},
+  setOffsetX: (arg0: number) => { },
   offsetY: 0,
-  setOffsetY: (arg0: number) => {},
+  setOffsetY: (arg0: number) => { },
   zoom: 1,
-  setZoom: (arg0: number) => {},
+  setZoom: (arg0: number) => { },
   x: 0,
-  setX: (arg0: number) => {},
+  setX: (arg0: number) => { },
   y: 0,
-  setY: (arg0: number) => {},
+  setY: (arg0: number) => { },
   lastX: 0,
-  setLastX: (arg0: number) => {},
+  setLastX: (arg0: number) => { },
   lastY: 0,
-  setLastY: (arg0: number) => {},
+  setLastY: (arg0: number) => { },
   lastOffsetX: 0,
-  setLastOffsetX: (arg0: number) => {},
+  setLastOffsetX: (arg0: number) => { },
   lastOffsetY: 0,
-  setLastOffsetY: (arg0: number) => {},
+  setLastOffsetY: (arg0: number) => { },
 };
 
 export interface AppearanceContextInterface {
@@ -58,7 +58,7 @@ export interface AppearanceContextInterface {
 
 export const AprcDefault: AppearanceContextInterface = {
   geoTransition: false,
-  setGeoTransition: (arg0: boolean) => {},
+  setGeoTransition: (arg0: boolean) => { },
 };
 
 export interface DataBulk {
@@ -71,7 +71,7 @@ export interface DataContextInterface {
 
 export const DataDefault: DataContextInterface = {
   datas: {},
-  setDatas: (newVal: DataBulk) => {},
+  setDatas: (newVal: DataBulk) => { },
 };
 
 export interface ObjectBulk {
@@ -91,10 +91,10 @@ export const BoardDefault: BoardContextInterface = {
   boardList: [],
   boards: {},
   current: "",
-  setCurrent: (_: string) => {},
-  setTitle: (_: string) => {},
-  syncObjectList: (_: string[]) => {},
-  newBoard: (_?: string) => {},
+  setCurrent: (_: string) => { },
+  setTitle: (_: string) => { },
+  syncObjectList: (_: string[]) => { },
+  newBoard: (_?: string) => { },
 };
 
 export interface ObjectContextInterface {
@@ -105,20 +105,24 @@ export interface ObjectContextInterface {
   selectedList: string[];
   select: (target: string[], keep?: boolean) => void;
   unselect: (target: string[]) => void;
+  dragging: React.MutableRefObject<boolean | null>;
   startDrag: (starter: string) => void;
   stopDrag: () => void;
+  onDrop: React.MutableRefObject<[string, () => void][]>;
 }
 
 export const ObjectDefault: ObjectContextInterface = {
   objects: {},
-  setObjects: (newVal: ObjectBulk) => {},
+  setObjects: (newVal: ObjectBulk) => { },
   objectList: [],
-  setObjectList: (newVal: string[]) => {},
+  setObjectList: (newVal: string[]) => { },
   selectedList: [],
-  select: (newVal: string[], keep?: boolean) => {},
-  unselect: (val: string[]) => {},
-  startDrag: (starter: string) => {},
-  stopDrag: () => {},
+  select: (newVal: string[], keep?: boolean) => { },
+  unselect: (val: string[]) => { },
+  dragging: { current: false },
+  startDrag: (starter: string) => { },
+  stopDrag: () => { },
+  onDrop: { current: [] },
 };
 export interface DataFlowContextInterface {
   buildLine: (a: string, b: number) => void;
@@ -126,7 +130,7 @@ export interface DataFlowContextInterface {
 }
 
 export const DataFlowDefault: DataFlowContextInterface = {
-  buildLine: (a: string, b: number) => {},
+  buildLine: (a: string, b: number) => { },
   lining: false,
 };
 
@@ -137,9 +141,9 @@ export interface MediaContextInterface {
 }
 
 export const MediaDefault: MediaContextInterface = {
-  newImage: (name: string, blob: Blob) => new Promise<string>(() => {}),
-  allImage: () => new Promise<string[]>(() => {}),
-  img: (id: string) => new Promise<string>(() => {}),
+  newImage: (name: string, blob: Blob) => new Promise<string>(() => { }),
+  allImage: () => new Promise<string[]>(() => { }),
+  img: (id: string) => new Promise<string>(() => { }),
 };
 
 export interface ActionContextInterface {
@@ -147,5 +151,5 @@ export interface ActionContextInterface {
 }
 
 export const ActionDefault: ActionContextInterface = {
-  showNewInterObjectModel: () => {},
+  showNewInterObjectModel: () => { },
 };

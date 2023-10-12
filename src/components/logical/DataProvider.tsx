@@ -27,6 +27,8 @@ export default function DataProvider({ children }: Props) {
     LoadData
   );
 
+  console.log(data);
+
   useEffect(() => {
     if (data) setDataBulk(data);
   }, [data]);

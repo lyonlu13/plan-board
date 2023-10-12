@@ -48,7 +48,7 @@ export default function NumberPropInput({
       <Input
         ref={ref}
         type="number"
-        value={value || ""}
+        value={value}
         onChange={(e) => onChange(parseInt(e.target.value))}
         onKeyDown={(e) => e.stopPropagation()}
         onPaste={(e) => e.stopPropagation()}

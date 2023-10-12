@@ -6,6 +6,7 @@ import { MouseEventHandler, ReactNode, useRef } from "react";
 import styled from "styled-components";
 
 const FrameRoot = styled.div`
+  position: relative;
   transition: 0.2s;
   &:hover {
     box-shadow: 0 0 4px 2px #009faa;

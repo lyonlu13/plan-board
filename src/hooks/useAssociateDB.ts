@@ -1,6 +1,8 @@
 import { DataCtx } from "components/logical/DataProvider";
-import { useContext, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { cloneDeep, isEqual } from "lodash";
+import { exportToJson, importFromJson } from "interObjects/define/util.mjs";
+import { def } from "interObjects/define/default";
 
 export interface DBOption<T> {
   key: string;
@@ -16,10 +18,13 @@ export default function useAssociateDB<T>(
 ) {
   const [db, setDb] = useState<IDBDatabase | null>(null);
   const [data, setData] = useState<{ [_: string]: T } | null>(null);
+  const needDefault = useRef<boolean>(false);
 
   useEffect(() => {
+
     console.log(dbName, storeName);
     var request = indexedDB.open(dbName, 2);
+
     request.onerror = function (event) {
       console.error(event);
     };
@@ -30,15 +35,10 @@ export default function useAssociateDB<T>(
       };
       let db = e.target.result;
 
-      const defaultData: { [_: string]: any } = {
-        objects: [],
-        datas: [],
-        flows: [],
-      };
-
       let ObjStore = db.createObjectStore("objects", {
         keyPath: option.key,
       });
+
       let DataStore = db.createObjectStore("datas", {
         keyPath: option.key,
       });
@@ -46,12 +46,26 @@ export default function useAssociateDB<T>(
         keyPath: option.key,
       });
 
-      setDb(db);
-      setData(defaultData[storeName]);
+      needDefault.current = true;
+
+
     };
 
     request.onsuccess = function () {
       let db = request.result;
+
+      if (needDefault.current) {
+        const defaultData: { [_: string]: any } = def;
+        importFromJson(db, JSON.stringify(defaultData)).then(() => {
+          setDb(db);
+          setData(defaultData[storeName]);
+        });
+        // refresh web page
+        window.location.reload();
+
+        return
+      }
+
       let objectStore: IDBObjectStore | null = null;
 
       console.log(storeName);

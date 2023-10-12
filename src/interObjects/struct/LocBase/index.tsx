@@ -5,9 +5,10 @@ import { ReactNode, useRef } from "react";
 import styled from "styled-components";
 
 const Root = styled.div`
-  position: absolute;
   transform-origin: top left;
   z-index: 1;
+  height: fit-content;
+  width: fit-content;
 `;
 
 interface Props {
@@ -52,9 +53,11 @@ export default function LocBase({ id, x, y, children }: Props) {
         stopDrag();
       }}
       style={{
-        left: offsetX + x * zoom,
-        top: offsetY + y * zoom,
-        transform: `scale(${zoom})`,
+        position: object.position,
+        left: object.position === "relative" ? undefined : offsetX + x * zoom,
+        top: object.position === "relative" ? undefined : offsetY + y * zoom,
+        transform:
+          object.position === "relative" ? undefined : `scale(${zoom})`,
         transition: `${
           geoTransition ? "0.3s all," : ""
         }  0.2s box-shadow, opacity 0.3s`,
