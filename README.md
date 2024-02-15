@@ -1,4 +1,4 @@
-# Plan Board
+# Plan Notebook
 An intuitive noting application that works on the web browser.
 Help you to sort out information. Providing simple, configurable blocks for constructing workflows (such as calculations, and text processing).
 
